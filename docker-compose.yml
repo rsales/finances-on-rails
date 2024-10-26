@@ -13,30 +13,28 @@ services:
     networks:
       - finance
 
-  web:
-    build: .
-    # command: ["bundle", "exec", "puma", "-C", "config/puma.rb"] # Old Version loaidng direct Puma. Run production
-    # command: ["./bin/rails", "server", "-b", "0.0.0.0"] # Old Version loaidng using server, Only HTTP
-    command: ["./bin/rails", "server", "-b", "ssl://0.0.0.0:3000?key=config/certs/localhost-key.pem&cert=config/certs/localhost.pem"]
-    volumes:
-      - .:/app
-      - ./certs:/app/config/certs
-    ports:
-      - "3000:3000"  # Porta HTTP
-      - "3001:3001"  # Porta HTTPS
-    environment:
-      DATABASE_HOST: ${DATABASE_HOST}
-      DATABASE_USERNAME: ${DATABASE_USERNAME}
-      DATABASE_PASSWORD: ${DATABASE_PASSWORD}
-      RAILS_ENV: development
-      DATABASE_URL: ${DATABASE_URL}
-      DATABASE_URL_PROD: ${DATABASE_URL_PROD}
-      RAILS_MASTER_KEY: ${RAILS_MASTER_KEY}
-      SECRET_KEY_BASE: ${SECRET_KEY_BASE}
-    networks:
-      - finance
-    depends_on:
-      - db
+  # web:
+  #   build: .
+  #   command: ["./bin/rails", "server", "-b", "ssl://0.0.0.0:3000?key=config/certs/localhost-key.pem&cert=config/certs/localhost.pem"]
+  #   volumes:
+  #     - .:/app
+  #     - ./certs:/app/config/certs
+  #   ports:
+  #     - "3000:3000"  # Porta HTTP
+  #     - "3001:3001"  # Porta HTTPS
+  #   environment:
+  #     DATABASE_HOST: ${DATABASE_HOST}
+  #     DATABASE_USERNAME: ${DATABASE_USERNAME}
+  #     DATABASE_PASSWORD: ${DATABASE_PASSWORD}
+  #     RAILS_ENV: development
+  #     DATABASE_URL: ${DATABASE_URL}
+  #     DATABASE_URL_PROD: ${DATABASE_URL_PROD}
+  #     RAILS_MASTER_KEY: ${RAILS_MASTER_KEY}
+  #     SECRET_KEY_BASE: ${SECRET_KEY_BASE}
+  #   networks:
+  #     - finance
+  #   depends_on:
+  #     - db
 
 volumes:
   postgres_data:
