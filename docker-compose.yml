@@ -5,7 +5,7 @@ services:
     environment:
       POSTGRES_USER: ${DATABASE_USERNAME}
       POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
-      POSTGRES_DB: finances_on_rails_production
+      POSTGRES_DB: finances_on_rails_development
     volumes:
       - postgres_data:/var/lib/postgresql/data
     ports:
@@ -15,7 +15,9 @@ services:
 
   web:
     build: .
-    command: ["bundle", "exec", "puma", "-C", "config/puma.rb"]
+    # command: ["bundle", "exec", "puma", "-C", "config/puma.rb"] # Old Version loaidng direct Puma. Run production
+    # command: ["./bin/rails", "server", "-b", "0.0.0.0"] # Old Version loaidng using server, Only HTTP
+    command: ["./bin/rails", "server", "-b", "ssl://0.0.0.0:3000?key=config/certs/localhost-key.pem&cert=config/certs/localhost.pem"]
     volumes:
       - .:/app
       - ./certs:/app/config/certs
@@ -26,8 +28,9 @@ services:
       DATABASE_HOST: ${DATABASE_HOST}
       DATABASE_USERNAME: ${DATABASE_USERNAME}
       DATABASE_PASSWORD: ${DATABASE_PASSWORD}
-      RAILS_ENV: production
+      RAILS_ENV: development
       DATABASE_URL: ${DATABASE_URL}
+      DATABASE_URL_PROD: ${DATABASE_URL_PROD}
       RAILS_MASTER_KEY: ${RAILS_MASTER_KEY}
       SECRET_KEY_BASE: ${SECRET_KEY_BASE}
     networks:

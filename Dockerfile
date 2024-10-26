@@ -66,4 +66,6 @@ ENTRYPOINT ["/rails/bin/docker-entrypoint"]
 
 # Start the server by default, this can be overwritten at runtime
 EXPOSE 3000
-CMD ["bundle", "exec", "puma", "-C", "config/puma.rb"]
+# CMD ["bundle", "exec", "puma", "-C", "config/puma.rb"] # Old Version loaidng direct Puma. Run production
+# CMD ["./bin/rails", "server", "-b", "0.0.0.0"] # Old Version loaidng using server, Only HTTP
+CMD ["./bin/rails", "server", "-b", "ssl://0.0.0.0:3000?key=config/certs/localhost-key.pem&cert=config/certs/localhost.pem"]

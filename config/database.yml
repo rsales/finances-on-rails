@@ -23,6 +23,7 @@ default: &default
 development:
   <<: *default
   database: finances_on_rails_development
+  url: <%= ENV['DATABASE_URL'] %>
 
 test:
   <<: *default
@@ -30,5 +31,5 @@ test:
 
 production:
   <<: *default
-  atabase: finances_on_rails_production
-  url: <%= ENV['DATABASE_URL'] %>
+  database: finances_on_rails_production
+  url: <%= ENV['DATABASE_URL_PROD'] %>

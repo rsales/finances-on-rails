@@ -24,7 +24,7 @@ threads_count = ENV.fetch("RAILS_MAX_THREADS", 3)
 threads threads_count, threads_count
 
 # Specifies the `port` that Puma will listen on to receive requests; default is 3000.
-port ENV.fetch("PORT", 3000)
+# port ENV.fetch("PORT", 3000)
 
 # Allow puma to be restarted by `bin/rails restart` command.
 plugin :tmp_restart
@@ -35,9 +35,13 @@ pidfile ENV["PIDFILE"] if ENV["PIDFILE"]
 
 localhost_key = "#{File.join('config', 'certs', 'localhost-key.pem')}"
 localhost_crt = "#{File.join('config', 'certs', 'localhost.pem')}"
-# To be able to use rake etc
-ssl_bind "0.0.0.0", "3001", {
-  key: localhost_key,
-  cert: localhost_crt,
-  verify_mode: "none"
-}
+
+if Rails.env.development?
+  ssl_bind "0.0.0.0", "3000", {
+    key: localhost_key,
+    cert: localhost_crt,
+    verify_mode: "none"
+  }
+else
+  port ENV.fetch("PORT", 3000)
+end
