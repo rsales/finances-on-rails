@@ -1,0 +1,42 @@
+version: '3.8'
+services:
+  db:
+    image: postgres:15
+    environment:
+      POSTGRES_USER: ${DATABASE_USERNAME}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
+      POSTGRES_DB: finances_on_rails_production
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    networks:
+      - finance
+
+  web:
+    build: .
+    command: ["bundle", "exec", "puma", "-C", "config/puma.rb"]
+    volumes:
+      - .:/app
+      - ./certs:/app/config/certs
+    ports:
+      - "3000:3000"  # Porta HTTP
+      - "3001:3001"  # Porta HTTPS
+    environment:
+      DATABASE_HOST: ${DATABASE_HOST}
+      DATABASE_USERNAME: ${DATABASE_USERNAME}
+      DATABASE_PASSWORD: ${DATABASE_PASSWORD}
+      RAILS_ENV: production
+      DATABASE_URL: ${DATABASE_URL}
+      RAILS_MASTER_KEY: ${RAILS_MASTER_KEY}
+      SECRET_KEY_BASE: ${SECRET_KEY_BASE}
+    networks:
+      - finance
+    depends_on:
+      - db
+
+volumes:
+  postgres_data:
+
+networks:
+  finance:
