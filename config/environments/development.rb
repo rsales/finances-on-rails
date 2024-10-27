@@ -4,8 +4,9 @@ Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
   config.force_ssl = true
 
-  config.file_watcher = ActiveSupport::FileUpdateChecker
-  config.cache_classes = false
+  config.ssl_options = {
+    redirect: { exclude: ->(request) { request.path =~ /healthcheck/ } }
+  }
 
   # In the development environment your application's code is reloaded any time
   # it changes. This slows down response time but is perfect for development
