@@ -51,6 +51,8 @@ end
 group :development do
   # Use console on exceptions pages [https://github.com/rails/web-console]
   gem "web-console"
+  # Avoid repeating yourself, use pry-rails instead of copying the initializer to every rails project [https://github.com/pry/pry-rails]
+  # gem "pry-rails"
 end
 
 group :test do

@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  resources :group_members
+  resources :family_groups
   resources :bank_accounts
   devise_for :users
   root "home#index"

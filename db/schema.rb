@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2024_10_29_045634) do
+ActiveRecord::Schema[7.2].define(version: 2024_10_29_115403) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -21,6 +21,22 @@ ActiveRecord::Schema[7.2].define(version: 2024_10_29_045634) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_bank_accounts_on_user_id"
+  end
+
+  create_table "family_groups", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "group_members", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "family_group_id", null: false
+    t.string "role"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["family_group_id"], name: "index_group_members_on_family_group_id"
+    t.index ["user_id"], name: "index_group_members_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -37,4 +53,6 @@ ActiveRecord::Schema[7.2].define(version: 2024_10_29_045634) do
   end
 
   add_foreign_key "bank_accounts", "users"
+  add_foreign_key "group_members", "family_groups"
+  add_foreign_key "group_members", "users"
 end
