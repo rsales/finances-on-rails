@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2024_10_29_170950) do
+ActiveRecord::Schema[7.2].define(version: 2024_10_29_220451) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -21,6 +21,22 @@ ActiveRecord::Schema[7.2].define(version: 2024_10_29_170950) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_bank_accounts_on_user_id"
+  end
+
+  create_table "budgets", force: :cascade do |t|
+    t.decimal "value"
+    t.string "month"
+    t.boolean "subscription"
+    t.integer "number_of_installments"
+    t.integer "current_installment"
+    t.bigint "bank_account_id", null: false
+    t.bigint "transaction_category_id", null: false
+    t.bigint "family_group_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["bank_account_id"], name: "index_budgets_on_bank_account_id"
+    t.index ["family_group_id"], name: "index_budgets_on_family_group_id"
+    t.index ["transaction_category_id"], name: "index_budgets_on_transaction_category_id"
   end
 
   create_table "category_types", force: :cascade do |t|
@@ -56,6 +72,22 @@ ActiveRecord::Schema[7.2].define(version: 2024_10_29_170950) do
     t.index ["family_group_id"], name: "index_transaction_categories_on_family_group_id"
   end
 
+  create_table "transactions", force: :cascade do |t|
+    t.decimal "value"
+    t.string "month"
+    t.boolean "subscription"
+    t.integer "number_of_installments"
+    t.integer "current_installment"
+    t.bigint "bank_account_id", null: false
+    t.bigint "transaction_category_id", null: false
+    t.bigint "family_group_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["bank_account_id"], name: "index_transactions_on_bank_account_id"
+    t.index ["family_group_id"], name: "index_transactions_on_family_group_id"
+    t.index ["transaction_category_id"], name: "index_transactions_on_transaction_category_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "name", default: "", null: false
     t.string "email", default: "", null: false
@@ -70,8 +102,14 @@ ActiveRecord::Schema[7.2].define(version: 2024_10_29_170950) do
   end
 
   add_foreign_key "bank_accounts", "users"
+  add_foreign_key "budgets", "bank_accounts"
+  add_foreign_key "budgets", "family_groups"
+  add_foreign_key "budgets", "transaction_categories"
   add_foreign_key "group_members", "family_groups"
   add_foreign_key "group_members", "users"
   add_foreign_key "transaction_categories", "category_types"
   add_foreign_key "transaction_categories", "family_groups"
+  add_foreign_key "transactions", "bank_accounts"
+  add_foreign_key "transactions", "family_groups"
+  add_foreign_key "transactions", "transaction_categories"
 end

@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  resources :budgets
+  resources :transactions
   resources :transaction_categories
   resources :group_members
   resources :family_groups
