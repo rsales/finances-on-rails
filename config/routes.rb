@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :transaction_categories
   resources :group_members
   resources :family_groups
   resources :bank_accounts

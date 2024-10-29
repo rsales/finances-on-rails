@@ -1,0 +1,21 @@
+<div class="w-full">
+  <% if notice.present? %>
+    <p class="py-2 px-3 bg-green-50 mb-5 text-green-500 font-medium rounded-lg inline-block" id="notice"><%= notice %></p>
+  <% end %>
+
+  <% content_for :title, "Transaction categories" %>
+
+  <div class="flex justify-between items-center">
+    <h1 class="font-bold text-4xl">Transaction categories</h1>
+    <%= link_to "New transaction category", new_transaction_category_path, class: "rounded-lg py-3 px-5 bg-blue-600 text-white block font-medium" %>
+  </div>
+
+  <div id="transaction_categories" class="min-w-full">
+    <% @transaction_categories.each do |transaction_category| %>
+      <%= render transaction_category %>
+      <p>
+        <%= link_to "Show this transaction category", transaction_category, class: "ml-2 rounded-lg py-3 px-5 bg-gray-100 inline-block font-medium" %>
+      </p>
+    <% end %>
+  </div>
+</div>
