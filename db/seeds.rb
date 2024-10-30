@@ -56,9 +56,11 @@ transaction_category19 = TransactionCategory.create(name: 'Outros', category_typ
 puts "TransactionCategory created successfully..."
 
 # Criar transações
-Transaction.create(value: 5000.00, month: '2024-10', subscription: false, number_of_installments: 0, current_installment: 0, bank_account: bank_account1, transaction_category: transaction_category1, family_group: family_group1)
-Transaction.create(value: 1500.00, month: '2024-10', subscription: true, number_of_installments: 12, current_installment: 1, bank_account: bank_account2, transaction_category: transaction_category2, family_group: family_group2)
+puts "Create Transaction..."
+Transaction.create(name: 'Salário Storyblok', value: 5000.00, month: '2024-10', subscription: false, number_of_installments: 0, current_installment: 0, bank_account: bank_account1, transaction_category: transaction_category1, family_group: family_group1)
+Transaction.create(name: 'Curso de RoR Udemy', value: 1500.00, month: '2024-10', subscription: true, number_of_installments: 12, current_installment: 1, bank_account: bank_account2, transaction_category: transaction_category4, family_group: family_group1)
+puts "Transaction created successfully..."
 
 # Criar orçamentos
-Budget.create(value: 2000.00, month: '2024-10', subscription: true, number_of_installments: 6, current_installment: 3, bank_account: bank_account1, transaction_category: transaction_category1, family_group: family_group1)
-Budget.create(value: 800.00, month: '2024-10', subscription: false, number_of_installments: 0, current_installment: 0, bank_account: bank_account2, transaction_category: transaction_category2, family_group: family_group2)
+# Budget.create(value: 2000.00, month: '2024-10', subscription: true, number_of_installments: 6, current_installment: 3, bank_account: bank_account1, transaction_category: transaction_category1, family_group: family_group1)
+# Budget.create(value: 800.00, month: '2024-10', subscription: false, number_of_installments: 0, current_installment: 0, bank_account: bank_account2, transaction_category: transaction_category2, family_group: family_group2)
