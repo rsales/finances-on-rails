@@ -49,6 +49,8 @@ group :development, :test do
 end
 
 group :development do
+  # A Ruby gem to load environment variables from `.env`.
+  gem "dotenv-rails"
   # Use console on exceptions pages [https://github.com/rails/web-console]
   gem "web-console"
   # Avoid repeating yourself, use pry-rails instead of copying the initializer to every rails project [https://github.com/pry/pry-rails]

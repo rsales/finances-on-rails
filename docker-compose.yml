@@ -3,6 +3,7 @@ services:
   db:
     image: postgres:15
     environment:
+      DATABASE_HOST: localhost
       POSTGRES_USER: ${DATABASE_USERNAME}
       POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
       POSTGRES_DB: finances_on_rails_development
