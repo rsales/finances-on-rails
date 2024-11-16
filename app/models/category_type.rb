@@ -3,7 +3,7 @@ class CategoryType < ApplicationRecord
   validates :name, presence: true, uniqueness: true
 
   # Definir tipos fixos de categorias
-  TYPES = [ "Revenues", "Investments", "Fixed Expenses", "Variable Expenses" ].freeze
+  TYPES = [ "Receitas", "Investimentos", "Despesas Fixas", "Despesas Variáveis" ].freeze
 
   # Método de classe para criar os tipos de categoria padrão, caso não existam
   def self.create_default_types
