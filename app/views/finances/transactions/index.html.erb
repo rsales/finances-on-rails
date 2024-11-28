@@ -16,7 +16,7 @@
       <tr>
         <td><%= transaction.name %></td>
         <td><%= transaction.transaction_category.name %></td>
-        <td><%= number_to_currency(transaction.valueon) %></td>
+        <td><%= number_to_currency(transaction.value) %></td>
         <td>
           <%#= link_to "Editar", edit_finances_family_group_transaction_path(@family_group, transaction) %>
           <%#= link_to "Excluir", finances_family_group_transaction_path(@family_group, transaction), method: :delete, data: { confirm: "Tem certeza?" } %>
