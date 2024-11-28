@@ -37,8 +37,11 @@ gem "bootsnap", require: false
 # Flexible authentication solution for Rails with Warden. [https://github.com/heartcombo/devise]
 gem "devise"
 
-# A framework for building reusable, testable & encapsulated view components in Ruby on Rails.
+# A framework for building reusable, testable & encapsulated view components in Ruby on Rails. [https://github.com/ViewComponent/view_component]
 gem "view_component", "~> 3.0"
+
+# Whenever is a Ruby gem that provides a clear syntax for writing and deploying cron jobs. [https://github.com/javan/whenever]
+gem "whenever", require: false
 
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem

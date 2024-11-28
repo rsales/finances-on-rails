@@ -19,6 +19,8 @@ Rails.application.routes.draw do
   get "/finances/:family_group_id/dashboard", to: "finances/dashboards#show", as: "finances_dashboard"
   get "/finances/:family_group_id/budget", to: "finances/budgets#index", as: "finances_budget"
   get "/finances/:family_group_id/budget/new", to: "finances/budgets#new", as: "new_finances_budget"
+  get "/finances/:family_group_id/budget/:month", to: "finances/budgets#show", as: "finances_budget_show"
+  post "/finances/:family_group_id/budget", to: "finances/budgets#create", as: "create_finances_budget"
   get "/finances/:family_group_id/consolidated", to: "finances/consolidated#index", as: "finances_consolidated"
   get "/finances/:family_group_id/transactions", to: "finances/transactions#index", as: "finances_transactions"
   get "/finances/:family_group_id/transactions/new", to: "finances/transactions#new", as: "new_finances_transaction"

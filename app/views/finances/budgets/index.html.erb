@@ -1,33 +1,15 @@
 <h1>Orçamentos de <%= @family_group.name %></h1>
 
-<%#= link_to "Criar novo Orçamento", new_finances_family_group_budget_path(@family_group), class: "btn btn-primary" %>
+<ul>
+  <% if @months.any? %>  
+    <% @months.each do |month| %>
+      <li>
+        <%= link_to l(Date.parse("#{month}-01"), format: :long), finances_budget_show_path(@family_group, month: month) %>
+      </li>
+    <% end %>
+  <% else %>
+    <p>Não há orçamentos criados ainda.</p>
+  <% end %>
+</ul>
 
-<% if @budgets.any? %>
-  <table class="table">
-    <thead>
-      <tr>
-        <th>Nome</th>
-        <th>Valor</th>
-        <th>Data de Início</th>
-        <th>Data de Fim</th>
-        <th>Ações</th>
-      </tr>
-    </thead>
-    <tbody>
-      <% @budgets.each do |budget| %>
-        <tr>
-          <td><%= budget.name %></td>
-          <td><%= number_to_currency(budget.amount) %></td>
-          <td><%= budget.start_date.strftime("%d/%m/%Y") %></td>
-          <td><%= budget.end_date.strftime("%d/%m/%Y") %></td>
-          <td>
-            <%= link_to "Editar", edit_finances_family_group_budget_path(@family_group, budget) %> |
-            <%= link_to "Excluir", finances_family_group_budget_path(@family_group, budget), method: :delete, data: { confirm: "Tem certeza?" } %>
-          </td>
-        </tr>
-      <% end %>
-    </tbody>
-  </table>
-<% else %>
-  <p>Não há orçamentos criados ainda.</p>
-<% end %>
+<%= link_to 'Novo Orçamento', new_finances_budget_path(@family_group) %>

@@ -39,6 +39,25 @@ namespace :dev do
     bank_account5 = BankAccount.create(name: "Generic Bank 2", institution: "Bank 2", user: user4)
     puts "BankAccount created successfully..."
 
+    # Criar Orçamento
+    puts "Create Budgets..."
+    current_month = Time.current.strftime("%Y-%m")
+    # Pega todas as categorias de transação do grupo
+    transaction_categories = family_group1.transaction_categories
+    transaction_categories.each do |category|
+      # Cria um orçamento zerado se não existir para o mês atual
+      unless family_group.budgets.exists?(month: current_month, transaction_category: category)
+        Budget.create!(
+          value: 0.0,
+          month: current_month,
+          transaction_category: category,
+          family_group: family_group1
+        )
+      end
+    end
+    puts "Budgets criados para o mês #{current_month}."
+    puts "Budgets created successfully..."
+
     # Criar transações
     puts "Create Transaction..."
     Transaction.create(name: "Salário Storyblok", value: 5000.00, month: "2024-10", subscription: false, number_of_installments: 0, current_installment: 0, bank_account: bank_account1, transaction_category: TransactionCategory.find_or_create_by(name: "Salário"), family_group: family_group1)
