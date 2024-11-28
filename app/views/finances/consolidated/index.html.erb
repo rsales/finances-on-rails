@@ -1,0 +1,13 @@
+<h1>Resumo Consolidado para <%= @family_group.name %></h1>
+
+<div class="consolidated-summary">
+  <p><strong>Total do Orçamento:</strong> <%= number_to_currency(@consolidated_data[:total_budget]) %></p>
+  <p><strong>Total de Transações:</strong> <%= number_to_currency(@consolidated_data[:total_transactions]) %></p>
+
+  <h2>Resumo por Categoria:</h2>
+  <ul>
+    <% @consolidated_data[:categories_summary].each do |category, amount| %>
+      <li><%= category.name %>: <%= number_to_currency(amount) %></li>
+    <% end %>
+  </ul>
+</div>

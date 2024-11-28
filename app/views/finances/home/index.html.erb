@@ -1,0 +1,12 @@
+<h1>Bem-vindo às suas finanças: <%= @current_user.name %></h1>
+
+<% if @family_groups.any? %>
+  <div class="family-groups">
+    <% @family_groups.each do |family_group| %>
+      <%= render FamilyGroupCardComponent.new(family_group: family_group) %>
+    <% end %>
+  </div>
+<% else %>
+  <p>Você ainda não faz parte de nenhum Family Group.</p>
+  <%= link_to "Criar novo Family Group", new_family_group_path, class: "btn btn-primary" %>
+<% end %>

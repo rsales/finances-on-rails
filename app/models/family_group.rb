@@ -3,7 +3,7 @@ class FamilyGroup < ApplicationRecord
   has_many :users, through: :group_members
   has_many :transaction_categories
   has_many :transactions
-  # has_many :budgets
+  has_many :budgets, dependent: :destroy
 
   after_create :create_default_transaction_category
 

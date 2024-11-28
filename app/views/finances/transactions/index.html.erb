@@ -1,0 +1,27 @@
+<h2>Transações de <%= @family_group.name %></h2>
+
+<%#= link_to "Nova Transação", new_finances_family_group_transaction_path(@family_group), class: "btn btn-primary" %>
+
+<table>
+  <thead>
+    <tr>
+      <th>Nome</th>
+      <th>Categoria</th>
+      <th>Valor</th>
+      <th>Ações</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @transactions.each do |transaction| %>
+      <tr>
+        <td><%= transaction.name %></td>
+        <td><%= transaction.transaction_category.name %></td>
+        <td><%= number_to_currency(transaction.valueon) %></td>
+        <td>
+          <%#= link_to "Editar", edit_finances_family_group_transaction_path(@family_group, transaction) %>
+          <%#= link_to "Excluir", finances_family_group_transaction_path(@family_group, transaction), method: :delete, data: { confirm: "Tem certeza?" } %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

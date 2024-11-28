@@ -15,6 +15,7 @@ namespace :dev do
     puts "Create FamilyGroup..."
     family_group1 = FamilyGroup.create(name: "Família Sales")
     family_group2 = FamilyGroup.create(name: "Família Filho")
+    family_group3 = FamilyGroup.create(name: "Sales Creations")
     puts "FamilyGroup created successfully..."
 
     # Associar membros do grupo familiar com papéis 'admin' ou 'editor'
@@ -23,8 +24,10 @@ namespace :dev do
     GroupMember.create(user: user1, family_group: family_group1, role: "admin")
     GroupMember.create(user: user2, family_group: family_group1, role: "admin")
     # Associar mebros da Family 2
-    GroupMember.create(user: user3, family_group: family_group1, role: "admin")
-    GroupMember.create(user: user4, family_group: family_group1, role: "admin")
+    GroupMember.create(user: user3, family_group: family_group2, role: "admin")
+    GroupMember.create(user: user4, family_group: family_group2, role: "admin")
+    # Associar mebros da Grpupe 3
+    GroupMember.create(user: user1, family_group: family_group3, role: "admin")
     puts "GroupMember created successfully..."
 
     # Criar contas bancárias
@@ -41,43 +44,5 @@ namespace :dev do
     Transaction.create(name: "Salário Storyblok", value: 5000.00, month: "2024-10", subscription: false, number_of_installments: 0, current_installment: 0, bank_account: bank_account1, transaction_category: TransactionCategory.find_or_create_by(name: "Salário"), family_group: family_group1)
     Transaction.create(name: "Curso de RoR Udemy", value: 1500.00, month: "2024-10", subscription: true, number_of_installments: 12, current_installment: 1, bank_account: bank_account2, transaction_category: TransactionCategory.find_or_create_by(name: "Cursos"), family_group: family_group1)
     puts "Transaction created successfully..."
-
-    # puts "Create Lists..."
-    # 5.times do |i|
-    #   List.create!(
-    #     name: Faker::Food.dish,
-    #     purshase_data: Faker::Date.in_date_period,
-    #     completed: Faker::Boolean.boolean,
-    #   )
-    # end
-    # puts "Lists created successfully..."
-
-    # puts "Create Procuts..."
-    # List.all.each do |list|
-    #   Random.rand(5).times do |i|
-    #     product = Product.create!(
-    #       name: Faker::Food.ingredient,
-    #       quantity: Faker::Number.number(digits: 1),
-    #       purchased: Faker::Boolean.boolean,
-    #       price: Faker::Commerce.price,
-    #       list_id: Faker::Number.between(from: 1, to: 5),
-    #     )
-    #     # Include total price using product 'price' and 'quantity'
-    #     product.total_price = product.price * product.quantity
-    #     # Include product in 'list.product' and save Product
-    #     list.products << product
-    #     product.save!
-    #   end
-
-    #   # Include value 'list.total_products'based all products in list
-    #   list.total_products = list.products.length
-    #   # Map and sum value all products in List
-    #   product_total_price = list.products.map { |p| p.price }.sum
-    #   list.total_price = product_total_price
-
-    #   # Save all update List
-    #   list.save!
-    # end
-    # puts "Products created successfully..."
   end
 end

@@ -1,0 +1,35 @@
+<h1>Editar Orçamento: <%= @budget.name %></h1>
+
+<%= form_with model: @budget, url: finances_family_group_budget_path(@family_group, @budget), method: :put, local: true do |form| %>
+  <% if @budget.errors.any? %>
+    <div class="alert alert-danger">
+      <ul>
+        <% @budget.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="form-group">
+    <%= form.label :name, "Nome" %>
+    <%= form.text_field :name, class: "form-control" %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :amount, "Valor" %>
+    <%= form.number_field :amount, class: "form-control" %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :start_date, "Data de Início" %>
+    <%= form.date_field :start_date, class: "form-control" %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :end_date, "Data de Fim" %>
+    <%= form.date_field :end_date, class: "form-control" %>
+  </div>
+
+  <%= form.submit "Atualizar Orçamento", class: "btn btn-warning" %>
+<% end %>

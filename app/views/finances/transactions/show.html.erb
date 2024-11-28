@@ -1,0 +1,8 @@
+<h2>Detalhes da Transação</h2>
+
+<p><strong>Descrição:</strong> <%= @transaction.description %></p>
+<p><strong>Categoria:</strong> <%= @transaction.transaction_category.name %></p>
+<p><strong>Valor:</strong> <%= number_to_currency(@transaction.amount) %></p>
+<p><strong>Data:</strong> <%= @transaction.date.strftime("%d/%m/%Y") %></p>
+
+<%= link_to "Voltar", finances_family_group_transactions_path(@family_group), class: "btn btn-secondary" %>

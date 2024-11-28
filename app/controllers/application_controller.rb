@@ -5,11 +5,18 @@ class ApplicationController < ActionController::Base
 
   protected
 
+  layout :determine_layout
+
+  private
+
   def configure_permitted_parameters
     devise_parameter_sanitizer.permit(:sign_up, keys: [ :name ])
     devise_parameter_sanitizer.permit(:account_update, keys: [ :name ])
   end
 
-  # Chame o método configure_permitted_parameters quando o Devise iniciar
   before_action :configure_permitted_parameters, if: :devise_controller?
+
+  def determine_layout
+    current_user ? "application" : "external"
+  end
 end
