@@ -1,7 +1,3 @@
-<% content_for :head do %>
-  <%= javascript_include_tag "vue_app", type: "module" %>
-<% end %>
-
 <h1 class="font-black text-3xl text-blue-600">Finanças da <%= @family_group.name %></h1>
 
 <section id="app">
@@ -21,7 +17,7 @@
               </tr>
             </thead>
             <tbody class="bg-white divide-y divide-gray-200">
-              <!-- Receitas -->
+              <!--Receitas-->
               <tr>
                 <td class="px-4 py-4 text-sm font-bold whitespace-nowrap">
                   <p class="text-sm text-gray-600 font-bold">
@@ -30,14 +26,14 @@
                 </td>
                 <td v-for="(item, index) in salaries" :key="index" class="px-4 py-4 text-sm font-medium whitespace-nowrap">
                   <input 
-                          v-if="item.isEditingField" 
-                          v-model="item.value" 
-                          type="text" 
-                          :id="`budget-${index}`" 
-                          :name="`budget-${index}`" 
-                          @blur="item.isEditingField = false"
-                          @keyup.enter="item.isEditingField = false"
-                          class="text-sm font-normal text-gray-600 cursor-pointer bg-transparent w-16 p-0 border-0 outline outline-1"
+                    v-if="item.isEditingField" 
+                    v-model="item.value" 
+                    type="text" 
+                    :id="`budget-${index}`" 
+                    :name="`budget-${index}`" 
+                    @blur="item.isEditingField = false"
+                    @keyup.enter="item.isEditingField = false"
+                    class="text-sm font-normal text-gray-600 cursor-pointer bg-transparent w-16 p-0 border-0 outline outline-1"
                   >
                   <p v-else @Click="showInput(index)" class="text-sm font-normal text-gray-600 cursor-pointer">
                     {{ toCurrency(item.value) }}
@@ -68,7 +64,7 @@
                   </p>
                 </td>
               </tr>
-              <!-- Investimentos -->
+              <!--Investimentos-->
               <tr>
                 <td class="px-4 py-4 text-sm font-bold whitespace-nowrap">
                   <p class="text-sm text-gray-600 font-bold">
@@ -105,7 +101,7 @@
                   </p>
                 </td>
               </tr>
-              <!-- Gastos Fixos -->
+              <!--Gastos Fixos-->
               <tr>
                 <td class="px-4 py-4 text-sm font-bold whitespace-nowrap">
                   <p class="text-sm text-gray-600 font-bold">
@@ -142,7 +138,7 @@
                   </p>
                 </td>
               </tr>
-              <!-- Gastos Fixos -->
+              <!--Gastos Fixos-->
               <tr>
                 <td class="px-4 py-4 text-sm font-bold whitespace-nowrap">
                   <p class="text-sm text-gray-600 font-bold">
@@ -186,3 +182,97 @@
     </div>
   </div>
 </section>
+
+<script type="module">
+  import { createApp, ref } from 'vue'
+
+  createApp({
+    setup() {
+      const months = ref(["JAN","FEV","MAR","ABR","MAI","JUN","JUL","AGO","SET","OUT","NOV","DEZ"]);
+      const salaries = ref([
+        {
+          id: 1,
+          isEditingField: false,
+          value: 1200.33
+        },
+        {
+          id: 2,
+          isEditingField: false,
+          value: 1200.00
+        },
+        {
+          id: 3,
+          isEditingField: false,
+          value: 1200.00
+        },
+        {
+          id: 4,
+          isEditingField: false,
+          value: 1200.00
+        },
+        {
+          id: 5,
+          isEditingField: false,
+          value: 1200.00
+        },
+        {
+          id: 6,
+          isEditingField: false,
+          value: 1200.00
+        },
+        {
+          id: 7,
+          isEditingField: false,
+          value: 1200.00
+        },
+        {
+          id: 8,
+          isEditingField: false,
+          value: 1200.00
+        },
+        {
+          id: 9,
+          isEditingField: false,
+          value: 1200.00
+        },
+        {
+          id: 10,
+          isEditingField: false,
+          value: 1200.00
+        },
+        {
+          id: 11,
+          isEditingField: false,
+          value: 1200.00
+        },
+        {
+          id: 12,
+          isEditingField: false,
+          value: 1200.00
+        }
+      ]);
+      function showInput(index) {
+        salaries.value[index].isEditingField = true
+        setTimeout(function() {
+          document.getElementById(`budget-${index}`).focus({ focusVisible: true })
+        }, 100)
+      };
+      function toCurrency(value) {
+        if (typeof value !== "number") {
+            return value;
+        }
+        var formatter = new Intl.NumberFormat('pt-BR', {
+            style: 'currency',
+            currency: 'BRL'
+        });
+        return formatter.format(value);
+      };
+      return {
+        months,
+        salaries,
+        showInput,
+        toCurrency
+      };
+    }
+  }).mount("#app");
+</script>

@@ -56,3 +56,28 @@ Family Group Card
     @apply col-span-3 bg-white shadow-sm border rounded p-5;
   }
 }
+
+/* ==========================================================================
+#year-table
+========================================================================== */
+#year-table {
+  tbody > tr {
+    @apply divide-x divide-gray-200
+  }
+  /* Receita */
+  tbody > tr {
+    @apply bg-green-50
+  }
+  /* Investimentos */
+  tbody > tr:nth-child(n+4) {
+    @apply bg-blue-50
+  }
+  /* Gastos Fixos */
+  tbody > tr:nth-child(n+7) {
+    @apply bg-yellow-50
+  }
+  /* Gastos Variáveis */
+  tbody > tr:nth-child(n+10) {
+    @apply bg-red-50
+  }
+}
