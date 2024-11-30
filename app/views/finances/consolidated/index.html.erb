@@ -1,13 +1,83 @@
-<h1 class="font-black text-3xl text-blue-600">Resumo Consolidado para <%= @family_group.name %></h1>
+<h1 class="font-black text-3xl text-blue-600 mb-5">Consolidado Anual: <%= @family_group.name %></h1>
 
-<div class="consolidated-summary">
-  <p><strong>Total do Orçamento:</strong> <%= number_to_currency(@consolidated_data[:total_budget]) %></p>
-  <p><strong>Total de Transações:</strong> <%= number_to_currency(@consolidated_data[:total_transactions]) %></p>
+<table class="w-full">
+  <thead>
+    <tr>
+      <th>Categoria</th>
+      <% (1..12).each do |month| %>
+        <th><%= Date::MONTHNAMES[month] %></th>
+      <% end %>
+      <th>Total</th>
+      <th>% RL</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @consolidated_data.each do |category_type, categories| %>
+      <!-- Agrupamento por Tipo de Categoria -->
+      <tr style="background-color: #f0f0f0; font-weight: bold;">
+        <td colspan="15"><%= category_type %></td>
+      </tr>
 
-  <h2>Resumo por Categoria:</h2>
-  <ul>
-    <% @consolidated_data[:categories_summary].each do |category, amount| %>
-      <li><%= category.name %>: <%= number_to_currency(amount) %></li>
+      <% categories.each do |category_name, monthly_values| %>
+        <!-- Detalhes de cada Categoria -->
+        <tr>
+          <td><%= category_name %></td>
+          <% (1..12).each do |month| %>
+            <td><%= monthly_values[month] ? number_to_currency(monthly_values[month]) : "-" %></td>
+          <% end %>
+          <td><%= number_to_currency(monthly_values[:total]) %></td>
+          <td><%= number_to_percentage(monthly_values[:percentage], precision: 2) %></td>
+        </tr>
+      <% end %>
     <% end %>
-  </ul>
-</div>
+  </tbody>
+  <tfoot>
+    <tr style="font-weight: bold; background-color: #333; color: white;">
+      <th>Total Geral</th>
+      <% (1..12).each do |month| %>
+        <th>
+          <%= number_to_currency(
+            @consolidated_data.sum do |category_type, categories|
+              categories.sum do |category_name, values|
+                # Verificar se o tipo de categoria é Receita, se sim, soma, se não, subtrai
+                if category_type == "Receitas"
+                  values[month].to_f
+                else
+                  -values[month].to_f # Subtrai para Investimentos, Gastos Fixos, e Gastos Variáveis
+                end
+              end
+            end
+          ) %>
+        </th>
+      <% end %>
+      <th>
+        <%= number_to_currency(
+          @consolidated_data.sum do |category_type, categories|
+            categories.sum do |category_name, values|
+              # Verificar se o tipo de categoria é Receita, se sim, soma, se não, subtrai
+              if category_type == "Receitas"
+                values[:total].to_f
+              else
+                -values[:total].to_f # Subtrai para Investimentos, Gastos Fixos, e Gastos Variáveis
+              end
+            end
+          end
+        ) %>
+      </th>
+      <th>
+        <%= number_to_percentage(
+          @consolidated_data.sum do |category_type, categories|
+            categories.sum do |category_name, values|
+              # Verificar se o tipo de categoria é Receita, se sim, soma, se não, subtrai
+              if category_type == "Receitas"
+                values[:percentage].to_f
+              else
+                -values[:percentage].to_f # Subtrai para Investimentos, Gastos Fixos, e Gastos Variáveis
+              end
+            end
+          end / 12, precision: 2
+        ) %>
+      </th>
+    </tr>
+  </tfoot>
+</table>

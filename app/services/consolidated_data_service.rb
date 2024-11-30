@@ -4,24 +4,52 @@ class ConsolidatedDataService
   end
 
   def call
-    {
-      total_budget: total_budget,
-      total_transactions: total_transactions,
-      categories_summary: categories_summary
-    }
+    # Carregar as categorias de transação associadas ao family_group (direta ou indiretamente)
+    transaction_categories = TransactionCategory
+      .where(id: @family_group.transactions.select(:transaction_category_id).distinct)
+      .or(TransactionCategory.where(family_group_id: @family_group.id)) # Caso exista uma relação direta
+      .includes(:category_type)
+
+    # Carregar as transações, incluindo as categorias
+    transactions = @family_group.transactions.includes(:transaction_category)
+
+    # Agrupar as transações por category_type e transaction_category
+    grouped_data = transaction_categories.group_by { |cat| cat.category_type.name }.transform_values do |categories|
+      categories.each_with_object({}) do |category, result|
+        result[category.name] = calculate_monthly_data(category, transactions)
+      end
+    end
+
+    # Retornar os dados organizados
+    grouped_data
   end
 
   private
 
-  def total_budget
-    @family_group.budgets.sum(:value)
+  # Método para calcular os valores por mês, para cada categoria
+  def calculate_monthly_data(category, transactions)
+    monthly_values = (1..12).map do |month|
+      relevant_transactions = transactions.select do |t|
+        # Comparando diretamente o mês (extraindo o número do mês da string "YYYY-MM")
+        t.transaction_category == category && t.month.split("-")[1].to_i == month
+      end
+
+      [ month, relevant_transactions.sum(&:value) ]
+    end.to_h
+
+    total = monthly_values.values.compact.sum
+    percentage = calculate_percentage(total, transactions)
+
+    monthly_values.merge(total: total, percentage: percentage)
   end
 
-  def total_transactions
-    @family_group.transactions.sum(:value)
-  end
 
-  def categories_summary
-    @family_group.transactions.group(:transaction_category).sum(:value)
+  # Calcular a porcentagem do RL
+  def calculate_percentage(category_total, transactions)
+    total_per_month = (1..12).map do |month|
+      transactions.select { |t| t.month.to_i == month }.sum(&:value)
+    end
+    return 0 if total_per_month.sum == 0
+    (category_total.to_f / total_per_month.sum) * 100
   end
 end
