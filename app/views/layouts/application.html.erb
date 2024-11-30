@@ -21,7 +21,7 @@
   <body class="bg-slate-200 flex">
     <%= render SidebarComponent.new(current_user: current_user, family_group: @family_group) %>
 
-    <main class="container mx-auto py-2">
+    <main class="content w-full px-5 py-5">
       <%= yield %>
     </main>
   </body>

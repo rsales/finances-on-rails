@@ -1,15 +1,35 @@
-<h1>Orçamentos de <%= @family_group.name %></h1>
+<h1 class="font-black text-3xl text-blue-600">Orçamentos de <%= @family_group.name %></h1>
 
-<ul>
-  <% if @months.any? %>  
-    <% @months.each do |month| %>
-      <li>
-        <%= link_to l(Date.parse("#{month}-01"), format: :long), finances_budget_show_path(@family_group, month: month) %>
-      </li>
-    <% end %>
-  <% else %>
-    <p>Não há orçamentos criados ainda.</p>
-  <% end %>
-</ul>
+<% if @months.any? %>
+  <table>
+    <tbody>
+      <% @months.each do |month| %>
+        <tr>
+          <td>
+            <%= link_to l(Date.parse("#{month}-01"), format: :long), finances_budget_show_path(@family_group, month: month) %>
+          </td>
+          <td>
+            <p>
+              2020
+            </p>
+          </td>
+          <td>
+            <p>
+              $35,000
+            </p>
+          </td>
+          <td>
+            <p>
+              New York, USA
+            </p>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% else %>
+  <p>Não há orçamentos criados ainda.</p>
+<% end %>
+
 
 <%= link_to 'Novo Orçamento', new_finances_budget_path(@family_group) %>

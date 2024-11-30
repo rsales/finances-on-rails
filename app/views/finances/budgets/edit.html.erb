@@ -1,16 +1,36 @@
-<h1>Editar Orçamento: <%= @budget.name %></h1>
+<h1>Editar Orçamento do Mês: <%= @month %> - <%= @family_group.name %></h1>
 
-<%= form_with url: finances_family_group_budget_path(@family_group), method: :patch do |form| %>
-  <% @budgets.each do |budget| %>
-    <div class="form-group">
-      <%= form.fields_for "budgets[]", budget do |budget_form| %>
-        <div>
-          <%= budget_form.label :value, "#{budget.transaction_category.name} (#{budget.month})" %>
-          <%= budget_form.number_field :value, value: budget.value, step: "0.01", min: "0" %>
-        </div>
+<%= form_with(url: finances_budgets_path(@family_group, month: @month), method: :patch) do %>
+  <table>
+    <thead>
+      <tr>
+        <th>Categoria</th>
+        <th>Valor</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @grouped_budgets.each do |category_type, budgets| %>
+        <tr>
+          <th colspan="2" class="category-type-header"><%= category_type.name %></th>
+        </tr>
+        
+        <% budgets.each_with_index do |budget, index| %>
+          <tr>
+            <td>
+              <%= budget.transaction_category.name %>
+              <%= hidden_field_tag "budgets[#{index}][id]", budget.id %>
+            </td>
+            <td>
+              <%= number_field_tag "budgets[#{index}][value]", budget.value, min: 0, step: 0.01, class: "form-control" %>
+            </td>
+          </tr>
+        <% end %>
       <% end %>
-    </div>
-  <% end %>
+    </tbody>
+  </table>
 
-  <%= form.submit "Atualizar Orçamentos" %>
+  <div>
+    <%= submit_tag "Salvar Orçamentos", class: "btn btn-primary" %>
+    <%= link_to "Cancelar", finances_budgets_path(@family_group), class: "btn btn-secondary" %>
+  </div>
 <% end %>

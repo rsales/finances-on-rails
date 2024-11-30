@@ -9,7 +9,7 @@
 Sidebar
 ========================================================================== */
 aside.sidebar {
-  @apply sticky flex top-0 left-0 h-screen w-16 py-2 pl-2;
+  @apply sticky flex top-0 left-0 h-screen w-24 py-5 pl-5;
 
   .content {
     @apply flex flex-col px-3 pt-3 bg-white h-full rounded-md;
@@ -18,7 +18,17 @@ aside.sidebar {
       @apply grow space-y-5;
 
       li {
-        @apply p-1;
+        @apply p-3 rounded hover:bg-slate-100;
+
+        a.active {
+          svg {
+            @apply  text-blue-600;
+          }
+        }
+
+      &:has(> a.active) {
+        @apply bg-slate-100
+      }
 
         svg {
           @apply h-6 w-6 cursor-pointer text-gray-500 transition-all hover:text-blue-600;
@@ -40,9 +50,9 @@ aside.sidebar {
 Family Group Card
 ========================================================================== */
 .family-groups {
-  @apply grid grid-cols-12;
+  @apply col-span-12 grid gap-x-3	grid-cols-12 mt-5;
 
   .family-group-card {
-    @apply col-span-4 bg-white shadow-sm m-4 border rounded ;
+    @apply col-span-3 bg-white shadow-sm border rounded p-5;
   }
 }

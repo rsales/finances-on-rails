@@ -1,1 +1,188 @@
-<h1>Finanças da <%= @family_group.name %></h1>
+<% content_for :head do %>
+  <%= javascript_include_tag "vue_app", type: "module" %>
+<% end %>
+
+<h1 class="font-black text-3xl text-blue-600">Finanças da <%= @family_group.name %></h1>
+
+<section id="app">
+  <div class="flex flex-col mt-6">
+    <div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+      <div class="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
+        <div class="overflow-hidden border border-gray-200 md:rounded-lg">
+          <table id="year-table" class="min-w-full divide-y divide-gray-200">
+            <thead class="bg-gray-50">
+              <tr>
+                <th scope="col" class="px-4 py-3.5  text-sm font-normal text-left rtl:text-right text-gray-500">
+                  Categorias
+                </th>
+                <th v-for="(month, index) in months" :key="index" scope="col" class="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500">
+                  {{ month }}
+                </th>
+              </tr>
+            </thead>
+            <tbody class="bg-white divide-y divide-gray-200">
+              <!-- Receitas -->
+              <tr>
+                <td class="px-4 py-4 text-sm font-bold whitespace-nowrap">
+                  <p class="text-sm text-gray-600 font-bold">
+                    Salario
+                  </p>
+                </td>
+                <td v-for="(item, index) in salaries" :key="index" class="px-4 py-4 text-sm font-medium whitespace-nowrap">
+                  <input 
+                          v-if="item.isEditingField" 
+                          v-model="item.value" 
+                          type="text" 
+                          :id="`budget-${index}`" 
+                          :name="`budget-${index}`" 
+                          @blur="item.isEditingField = false"
+                          @keyup.enter="item.isEditingField = false"
+                          class="text-sm font-normal text-gray-600 cursor-pointer bg-transparent w-16 p-0 border-0 outline outline-1"
+                  >
+                  <p v-else @Click="showInput(index)" class="text-sm font-normal text-gray-600 cursor-pointer">
+                    {{ toCurrency(item.value) }}
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td class="px-4 py-4 text-sm font-bold whitespace-nowrap">
+                  <p class="text-sm text-gray-600 font-bold">
+                    Freela
+                  </p>
+                </td>
+                <td v-for="index in 12" :key="index" class="px-4 py-4 text-sm font-medium whitespace-nowrap">
+                  <p class="text-sm font-normal text-gray-600 cursor-pointer">
+                    R$ 1.200,00
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td class="px-4 py-4 text-sm font-bold whitespace-nowrap">
+                  <p class="text-sm text-gray-600 font-bold">
+                    Vale Refeição
+                  </p>
+                </td>
+                <td v-for="index in 12" :key="index" class="px-4 py-4 text-sm font-medium whitespace-nowrap">
+                  <p class="text-sm font-normal text-gray-600">
+                    R$ 1.200,00
+                  </p>
+                </td>
+              </tr>
+              <!-- Investimentos -->
+              <tr>
+                <td class="px-4 py-4 text-sm font-bold whitespace-nowrap">
+                  <p class="text-sm text-gray-600 font-bold">
+                    Investimento/Poupar
+                  </p>
+                </td>
+                <td v-for="index in 12" :key="index" class="px-4 py-4 text-sm font-medium whitespace-nowrap">
+                  <p class="text-sm font-normal text-gray-600">
+                    R$ 1.200,00
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td class="px-4 py-4 text-sm font-bold whitespace-nowrap">
+                  <p class="text-sm text-gray-600 font-bold">
+                    Curso e Livros
+                  </p>
+                </td>
+                <td v-for="index in 12" :key="index" class="px-4 py-4 text-sm font-medium whitespace-nowrap">
+                  <p class="text-sm font-normal text-gray-600">
+                    R$ 1.200,00
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td class="px-4 py-4 text-sm font-bold whitespace-nowrap">
+                  <p class="text-sm text-gray-600 font-bold">
+                    Pós-graduação
+                  </p>
+                </td>
+                <td v-for="index in 12" :key="index" class="px-4 py-4 text-sm font-medium whitespace-nowrap">
+                  <p class="text-sm font-normal text-gray-600">
+                    R$ 1.200,00
+                  </p>
+                </td>
+              </tr>
+              <!-- Gastos Fixos -->
+              <tr>
+                <td class="px-4 py-4 text-sm font-bold whitespace-nowrap">
+                  <p class="text-sm text-gray-600 font-bold">
+                    Alimentação
+                  </p>
+                </td>
+                <td v-for="index in 12" :key="index" class="px-4 py-4 text-sm font-medium whitespace-nowrap">
+                  <p class="text-sm font-normal text-gray-600">
+                    R$ 1.200,00
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td class="px-4 py-4 text-sm font-bold whitespace-nowrap">
+                  <p class="text-sm text-gray-600 font-bold">
+                    Serviços de Streaming
+                  </p>
+                </td>
+                <td v-for="index in 12" :key="index" class="px-4 py-4 text-sm font-medium whitespace-nowrap">
+                  <p class="text-sm font-normal text-gray-600">
+                    R$ 1.200,00
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td class="px-4 py-4 text-sm font-bold whitespace-nowrap">
+                  <p class="text-sm text-gray-600 font-bold">
+                    Segurto de Vida
+                  </p>
+                </td>
+                <td v-for="index in 12" :key="index" class="px-4 py-4 text-sm font-medium whitespace-nowrap">
+                  <p class="text-sm font-normal text-gray-600">
+                    R$ 1.200,00
+                  </p>
+                </td>
+              </tr>
+              <!-- Gastos Fixos -->
+              <tr>
+                <td class="px-4 py-4 text-sm font-bold whitespace-nowrap">
+                  <p class="text-sm text-gray-600 font-bold">
+                    Lanches
+                  </p>
+                </td>
+                <td v-for="index in 12" :key="index" class="px-4 py-4 text-sm font-medium whitespace-nowrap">
+                  <p class="text-sm font-normal text-gray-600">
+                    R$ 1.200,00
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td class="px-4 py-4 text-sm font-bold whitespace-nowrap">
+                  <p class="text-sm text-gray-600 font-bold">
+                    Animais de Estimação
+                  </p>
+                </td>
+                <td v-for="index in 12" :key="index" class="px-4 py-4 text-sm font-medium whitespace-nowrap">
+                  <p class="text-sm font-normal text-gray-600">
+                    R$ 1.200,00
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td class="px-4 py-4 text-sm font-bold whitespace-nowrap">
+                  <p class="text-sm text-gray-600 font-bold">
+                    Beleza e vestuáriuo
+                  </p>
+                </td>
+                <td v-for="index in 12" :key="index" class="px-4 py-4 text-sm font-medium whitespace-nowrap">
+                  <p class="text-sm font-normal text-gray-600">
+                    R$ 1.200,00
+                  </p>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

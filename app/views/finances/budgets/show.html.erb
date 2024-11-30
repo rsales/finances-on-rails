@@ -1,20 +1,32 @@
 <h1>Orçamentos para <%= l(Date.parse("#{@month}-01"), format: :long) %></h1>
 
-<table>
-  <thead>
-    <tr>
-      <th>Categoria</th>
-      <th>Valor</th>
-    </tr>
-  </thead>
-  <tbody>
-    <% @budgets.each do |budget| %>
+<% if @grouped_budgets.present? %>
+  <table>
+    <thead>
       <tr>
-        <td><%= budget.transaction_category.name %></td>
-        <td><%= number_to_currency(budget.value) %></td>
+        <th>Categoria</th>
+        <th>Valor</th>
       </tr>
-    <% end %>
-  </tbody>
-</table>
+    </thead>
+    <tbody>
+      <% @grouped_budgets.each do |category_type, budgets| %>
+        <tr>
+          <td colspan="2"><strong><%= category_type.name %></strong></td>
+        </tr>
+        <% budgets.each do |budget| %>
+          <tr>
+            <td><%= budget.transaction_category.name %></td>
+            <td><%= number_to_currency(budget.value) %></td>
+          </tr>
+        <% end %>
+      <% end %>
+    </tbody>
+  </table>
+  <div>
+    <%= link_to "Editar Orçamentos do Mês", edit_finances_budgets_path(@family_group, month: @month), class: "btn btn-primary" %>
+  </div>
+<% else %>
+  <p>Nenhum orçamento disponível para o mês selecionado.</p>
+<% end %>
 
-<%= link_to "Voltar", finances_budget_path(@family_group), class: "btn btn-secondary" %>
+<%= link_to "Voltar", finances_budgets_path(@family_group), class: "btn btn-secondary" %>
