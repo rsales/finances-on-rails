@@ -35,7 +35,7 @@ namespace :dev do
 
     transaction_categories = family_group1.transaction_categories
     transaction_categories.each do |category|
-      unless family_group.budgets.exists?(month: current_month, transaction_category: category)
+      unless family_group1.budgets.exists?(month: current_month, transaction_category: category)
         Budget.create!(
           value: 0.0,
           month: current_month,
@@ -50,6 +50,9 @@ namespace :dev do
     puts "Create Transaction..."
     Transaction.create(name: "Salário Storyblok", value: 5000.00, month: "2024-10", subscription: false, number_of_installments: 0, current_installment: 0, bank_account: bank_account1, transaction_category: TransactionCategory.find_or_create_by(name: "Salário"), family_group: family_group1)
     Transaction.create(name: "Curso de RoR Udemy", value: 1500.00, month: "2024-10", subscription: true, number_of_installments: 12, current_installment: 1, bank_account: bank_account2, transaction_category: TransactionCategory.find_or_create_by(name: "Cursos"), family_group: family_group1)
+
+    Transaction.create(name: "Salário Storyblok", value: 15000.00, month: "2024-11", subscription: false, number_of_installments: 0, current_installment: 0, bank_account: bank_account1, transaction_category: TransactionCategory.find_or_create_by(name: "Salário"), family_group: family_group1)
+    Transaction.create(name: "Curso de VUE 3", value: 500.00, month: "2024-11", subscription: true, number_of_installments: 12, current_installment: 1, bank_account: bank_account2, transaction_category: TransactionCategory.find_or_create_by(name: "Cursos"), family_group: family_group1)
     puts "Transaction created successfully..."
   end
 end

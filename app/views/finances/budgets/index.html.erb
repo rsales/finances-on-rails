@@ -1,35 +1,47 @@
-<h1 class="font-black text-3xl text-blue-600">Orçamentos de <%= @family_group.name %></h1>
+<div class="individual-content grid gap-x-3	grid-cols-12">
+  <div class="hero-card bg-white rounded col-span-12 px-5 py-4">
+    <div class="flex text-base text-gray-400 mb-2 gap-1">
+      <svg class="w-5 h-6" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-notepad-text"><path d="M8 2v4"/><path d="M12 2v4"/><path d="M16 2v4"/><rect width="16" height="18" x="4" y="4" rx="2"/><path d="M8 10h6"/><path d="M8 14h8"/><path d="M8 18h5"/></svg>
+      <p>
+        Orçamento:
+      </p>
+    </div>
+    <h1 class="font-black text-3xl text-gray-700">
+      <%= @family_group.name %>
+    </h1>
+  </div>
 
-<% if @months.any? %>
-  <table>
-    <tbody>
-      <% @months.each do |month| %>
-        <tr>
-          <td>
-            <%= link_to l(Date.parse("#{month}-01"), format: :long), finances_budget_show_path(@family_group, month: month) %>
-          </td>
-          <td>
-            <p>
-              2020
-            </p>
-          </td>
-          <td>
-            <p>
-              $35,000
-            </p>
-          </td>
-          <td>
-            <p>
-              New York, USA
-            </p>
-          </td>
-        </tr>
-      <% end %>
-    </tbody>
-  </table>
-<% else %>
-  <p>Não há orçamentos criados ainda.</p>
-<% end %>
-
-
-<%= link_to 'Novo Orçamento', new_finances_budget_path(@family_group) %>
+  <section class="col-span-12">
+    <% if @months.any? %>
+      <table>
+        <tbody>
+          <% @months.each do |month| %>
+            <tr>
+              <td>
+                <%= link_to l(Date.parse("#{month}-01"), format: :long), finances_budget_show_path(@family_group, month: month) %>
+              </td>
+              <td>
+                <p>
+                  2020
+                </p>
+              </td>
+              <td>
+                <p>
+                  $35,000
+                </p>
+              </td>
+              <td>
+                <p>
+                  New York, USA
+                </p>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    <% else %>
+      <p>Não há orçamentos criados ainda.</p>
+    <% end %>
+    <%= link_to 'Novo Orçamento', new_finances_budget_path(@family_group) %>
+  </section>
+</div>

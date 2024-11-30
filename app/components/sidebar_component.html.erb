@@ -51,35 +51,15 @@
       <% end %>
       <div class="bootom-actions">
         <%= button_to destroy_user_session_path, method: :delete, class: "btn btn-link" do %>
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M12 9l-3 3m0 0l3 3m-3-3h12.75" />
-          </svg>
+          <ul class="nav">
+            <li>
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M12 9l-3 3m0 0l3 3m-3-3h12.75" />
+              </svg>
+            </li>
+          </ul>
         <% end %>
       </div>
-
-<%# if show_dashboard_mode? %>
-<!--  <div class="sidebar">
-    <ul>
-      <li><%#= link_to "Back", finances_home_path %></li>
-      <li><%#= link_to "Dashboard", finances_dashboard_path(@family_group) %></li>
-      <li><%#= link_to "Orçamento", finances_budget_path(@family_group) %></li>
-      <li><%#= link_to "Consolidado", finances_consolidated_path(@family_group) %></li>
-      <li><%#= link_to "Transações", finances_transactions_path(@family_group) %></li>
-      <li><%#= link_to "Config (Geral)", finances_config_general_path(@family_group) %></li>
-    </ul>
-  </div>
-<%# else %>-->
-<!--  <div class="sidebar">
-    <ul>
-      <li><%#= link_to "Home", finances_home_path %></li>
-      <li><%#= link_to "Configuração de Conta", user_config_general_path(@current_user) %></li>
-      <li><%#= link_to "Configuração de Perfil", user_config_profile_path(@current_user) %></li>
-      <li><%#= link_to "Minhas Contas Bancárias", user_config_bank_accounts_path(@current_user) %></li>
-      <li><%#= link_to "Criar um Family Group", new_family_group_path %></li>
-    </ul>
-  </div>
-<%# end %>-->
-
     </div>
   </aside>
 <% else %>
