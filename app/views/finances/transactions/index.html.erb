@@ -1,52 +1,101 @@
-<h1 class="font-black text-3xl text-blue-600">Transações de <%= @family_group.name %></h1>
+<div class="individual-content grid gap-x-3	grid-cols-12">
+  <div class="hero-card bg-white rounded col-span-12 px-5 py-4">
+      <div class="flex text-base text-gray-400 mb-2 gap-1">
+      <svg class="w-5 h-6" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-left-right"><path d="M8 3 4 7l4 4"/><path d="M4 7h16"/><path d="m16 21 4-4-4-4"/><path d="M20 17H4"/></svg>
+      <p>
+        Transações:
+      </p>
+    </div>
+    <h1 class="font-black text-3xl text-gray-700">
+      <%= @family_group.name %>
+    </h1>
+  </div>
 
-<table>
-  <thead>
-    <tr>
-      <th>Nome</th>
-      <th>Categoria</th>
-      <th>Valor</th>
-      <th>Ações</th>
-    </tr>
-  </thead>
-  <tbody>
-    <% @transactions.each do |transaction| %>
-      <tr>
-        <td><%= transaction.name %></td>
-        <td><%= transaction.transaction_category.name %></td>
-        <td><%= number_to_currency(transaction.value) %></td>
-        <td>
-          <%#= link_to "Editar", edit_finances_family_group_transaction_path(@family_group, transaction) %>
-          <%#= link_to "Excluir", finances_family_group_transaction_path(@family_group, transaction), method: :delete, data: { confirm: "Tem certeza?" } %>
-        </td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
+<section class="col-span-12 mt-5">
+  <!-- Filtro de mês -->
+  <%= form_with(url: finances_transactions_path(@family_group), method: :get, local: true, class: "mb-4") do |form| %>
+    <div class="form-row">
+      <div class="col-md-3">
+        <%= form.select :month, options_for_select((1..12).map { |m| [Date::MONTHNAMES[m], m] }, selected: params[:month]), {}, class: "form-control" %>
+      </div>
+      <div class="col-md-3">
+        <%= form.submit "Filtrar", class: "btn btn-primary" %>
+      </div>
+    </div>
+  <% end %>
+</section>
 
-<div class="actions flex gap-2 mt-3">
-<%= 
-  link_to "Nova Receita", 
-  new_by_category_type_path(@family_group, "revenue"),
-  data: { turbo_frame: "modal" }, 
-  class: "btn bg-green-500 hover:bg-green-600 px-3 py-2 text-white rounded" 
-%>
-<%= 
-  link_to "Novo Investimento", 
-  new_by_category_type_path(@family_group, "investment"), 
-  data: { turbo_frame: "modal" }, 
-  class: "btn bg-blue-500 hover:bg-blue-600 px-3 py-2 text-white rounded"
-%>
-<%= 
-  link_to "Nova Despesa Fixa", 
-  new_by_category_type_path(@family_group, "fixed-expenses"), 
-  data: { turbo_frame: "modal" }, 
-  class: "btn bg-red-500 hover:bg-red-600 px-3 py-2 text-white rounded"
-%>
-<%= 
-  link_to "Nova Despesa Variável",
-  new_by_category_type_path(@family_group, "variable-expenses"),
-  data: { turbo_frame: "modal" },
-  class: "btn bg-yellow-500 hover:bg-yellow-600 px-3 py-2 text-white rounded"
-%>
+<section class="col-span-12">
+  <div class="flex flex-col mt-0 w-full">
+    <div class="overflow-x-auto">
+      <div class="inline-block min-w-full align-middle">
+        <div class="overflow-hidden border border-gray-200 md:rounded-lg">
+          <table class="min-w-full divide-y divide-gray-200">
+            <thead class="bg-gray-50">
+              <tr>
+                <th scope="col" class="px-4 py-3.5  text-sm font-black text-left rtl:text-right text-gray-500">Descrição</th>
+                <th scope="col" class="px-4 py-3.5  text-sm font-black text-left rtl:text-right text-gray-500">Categoria</th>
+                <th scope="col" class="px-4 py-3.5  text-sm font-black text-left rtl:text-right text-gray-500">Valor</th>
+                <th scope="col" class="px-4 py-3.5  text-sm font-black text-left rtl:text-right text-gray-500">Data</th>
+              </tr>
+            </thead>
+            <tbody class="bg-white divide-y divide-gray-200">
+              <% @transactions.each do |transaction| %>
+                <tr>
+                  <td class="px-2 py-2 text-sm font-bold whitespace-nowrap">
+                    <p class="text-sm text-gray-600 font-bold">
+                      <%= transaction.name %>
+                    </p>
+                  </td>
+                  <td class="px-4 py-2 text-sm font-bold whitespace-nowrap">
+                    <p class="text-sm font-normal text-gray-600 cursor-pointer">
+                      <%= transaction.transaction_category.name %>
+                    </p>
+                  </td>
+                  <td class="px-4 py-2 text-sm font-bold whitespace-nowrap">
+                    <p class="text-sm font-normal text-gray-600 cursor-pointer">
+                      <%= number_to_currency(transaction.value) %>
+                    </p>
+                  </td>
+                  <td class="px-4 py-2 text-sm font-bold whitespace-nowrap">
+                    <p class="text-sm font-normal text-gray-600 cursor-pointer">
+                      <%= transaction.month %>
+                    </p>
+                  </td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+  <section class="actions col-span-12 flex gap-2 mt-5">
+    <%= 
+      link_to "Nova Receita", 
+      new_by_category_type_path(@family_group, "revenue"),
+      data: { turbo_frame: "modal" }, 
+      class: "btn bg-green-500 hover:bg-green-600 px-3 py-2 text-white rounded" 
+    %>
+    <%= 
+      link_to "Novo Investimento", 
+      new_by_category_type_path(@family_group, "investment"), 
+      data: { turbo_frame: "modal" }, 
+      class: "btn bg-blue-500 hover:bg-blue-600 px-3 py-2 text-white rounded"
+    %>
+    <%= 
+      link_to "Nova Despesa Fixa", 
+      new_by_category_type_path(@family_group, "fixed-expenses"), 
+      data: { turbo_frame: "modal" }, 
+      class: "btn bg-red-500 hover:bg-red-600 px-3 py-2 text-white rounded"
+    %>
+    <%= 
+      link_to "Nova Despesa Variável",
+      new_by_category_type_path(@family_group, "variable-expenses"),
+      data: { turbo_frame: "modal" },
+      class: "btn bg-yellow-500 hover:bg-yellow-600 px-3 py-2 text-white rounded"
+    %>
+  </section>
 </div>

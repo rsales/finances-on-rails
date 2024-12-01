@@ -10,8 +10,19 @@ class Finances::TransactionsController < ApplicationController
     "variable-expenses" => "Gastos Variáveis"
   }
 
+  # def index
+  #   @transactions = @family_group.transactions
+  # end
   def index
+    # Pegando o mês da URL (caso o mês não seja selecionado, será nil)
+    @month = params[:month].to_i
+
+    # Filtrar transações de acordo com o mês, caso um mês tenha sido selecionado
     @transactions = @family_group.transactions
+    if @month.present? && @month.between?(1, 12)
+      # Filtra as transações para o mês selecionado
+      @transactions = @transactions.where("extract(month from date) = ?", @month)
+    end
   end
 
   def new
