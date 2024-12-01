@@ -28,16 +28,16 @@ class FamilyGroup < ApplicationRecord
     TransactionCategory.create(name: "Seguro do Carro", category_type: CategoryType.find_or_create_by(name: "Gastos Fixos"), family_group_id: self.id) # 15
     TransactionCategory.create(name: "Plano de Saúde", category_type: CategoryType.find_or_create_by(name: "Gastos Fixos"), family_group_id: self.id) # 16
     TransactionCategory.create(name: "Celular", category_type: CategoryType.find_or_create_by(name: "Gastos Fixos"), family_group_id: self.id) # 17
-    # Gastos Váriaveis
-    TransactionCategory.create(name: "Lanches", category_type: CategoryType.find_or_create_by(name: "Gastos Váriaveis"), family_group_id: self.id) # 18
-    TransactionCategory.create(name: "Lazer", category_type: CategoryType.find_or_create_by(name: "Gastos Váriaveis"), family_group_id: self.id) # 19
-    TransactionCategory.create(name: "Animais de Estimação", category_type: CategoryType.find_or_create_by(name: "Gastos Váriaveis"), family_group_id: self.id) # 20
-    TransactionCategory.create(name: "Beleza e Vestuário", category_type: CategoryType.find_or_create_by(name: "Gastos Váriaveis"), family_group_id: self.id) # 21
-    TransactionCategory.create(name: "Cartão de Crédito", category_type: CategoryType.find_or_create_by(name: "Gastos Váriaveis"), family_group_id: self.id) # 22
-    TransactionCategory.create(name: "Saúde", category_type: CategoryType.find_or_create_by(name: "Gastos Váriaveis"), family_group_id: self.id) # 23
-    TransactionCategory.create(name: "Carro", category_type: CategoryType.find_or_create_by(name: "Gastos Váriaveis"), family_group_id: self.id) # 24
-    TransactionCategory.create(name: "Transporte", category_type: CategoryType.find_or_create_by(name: "Gastos Váriaveis"), family_group_id: self.id) # 25
-    TransactionCategory.create(name: "Casa", category_type: CategoryType.find_or_create_by(name: "Gastos Váriaveis"), family_group_id: self.id) # 26
-    TransactionCategory.create(name: "Outros", category_type: CategoryType.find_or_create_by(name: "Gastos Váriaveis"), family_group_id: self.id) # 27
+    # Gastos Variáveis
+    TransactionCategory.create(name: "Lanches", category_type: CategoryType.find_or_create_by(name: "Gastos Variáveis"), family_group_id: self.id) # 18
+    TransactionCategory.create(name: "Lazer", category_type: CategoryType.find_or_create_by(name: "Gastos Variáveis"), family_group_id: self.id) # 19
+    TransactionCategory.create(name: "Animais de Estimação", category_type: CategoryType.find_or_create_by(name: "Gastos Variáveis"), family_group_id: self.id) # 20
+    TransactionCategory.create(name: "Beleza e Vestuário", category_type: CategoryType.find_or_create_by(name: "Gastos Variáveis"), family_group_id: self.id) # 21
+    TransactionCategory.create(name: "Cartão de Crédito", category_type: CategoryType.find_or_create_by(name: "Gastos Variáveis"), family_group_id: self.id) # 22
+    TransactionCategory.create(name: "Saúde", category_type: CategoryType.find_or_create_by(name: "Gastos Variáveis"), family_group_id: self.id) # 23
+    TransactionCategory.create(name: "Carro", category_type: CategoryType.find_or_create_by(name: "Gastos Variáveis"), family_group_id: self.id) # 24
+    TransactionCategory.create(name: "Transporte", category_type: CategoryType.find_or_create_by(name: "Gastos Variáveis"), family_group_id: self.id) # 25
+    TransactionCategory.create(name: "Casa", category_type: CategoryType.find_or_create_by(name: "Gastos Variáveis"), family_group_id: self.id) # 26
+    TransactionCategory.create(name: "Outros", category_type: CategoryType.find_or_create_by(name: "Gastos Variáveis"), family_group_id: self.id) # 27
   end
 end

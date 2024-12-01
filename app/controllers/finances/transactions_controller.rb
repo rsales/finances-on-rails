@@ -3,33 +3,83 @@ class Finances::TransactionsController < ApplicationController
   before_action :set_and_authorize_family_group
   before_action :set_transaction, only: [ :show, :edit, :update, :destroy ]
 
+  CATEGORY_TYPE_MAP = {
+    "revenue" => "Receitas",
+    "investment" => "Investimentos",
+    "fixed-expenses" => "Gastos Fixos",
+    "variable-expenses" => "Gastos Variáveis"
+  }
+
   def index
     @transactions = @family_group.transactions
   end
 
-  def show
-  end
-
   def new
     @transaction = @family_group.transactions.build
+    @transaction_categories = TransactionCategory.all.order(:name)
   end
+
+  def new_by_category_type
+    @category_type = CATEGORY_TYPE_MAP[params[:category_type]]
+
+    if @category_type.nil?
+      redirect_to finances_transactions_path(@family_group), alert: "Categoria inválida."
+      return
+    end
+
+    category_type_key = params[:category_type]
+
+    # Converte a chave da URL para o nome do tipo de categoria
+    category_type_name = CATEGORY_TYPE_MAP[category_type_key]
+
+    @transaction_categories = TransactionCategory.joins(:category_type)
+      .where(category_types: { name: category_type_name })
+      .where(family_group_id: @family_group.id) # Se for necessário garantir que é do grupo correto
+
+    # binding.pry
+
+    @transaction = @family_group.transactions.build
+
+    respond_to do |format|
+      format.turbo_stream
+      format.html { render :new }
+    end
+  end
+
+  # def new_by_category_type
+  #   category_type = params[:category_type]
+  #   @transaction_categories = TransactionCategory.joins(:category_type)
+  #                                                 .where(category_types: { key: category_type })
+  #   @transaction = @family_group.transactions.build
+  #   render partial: "form", locals: { transaction: @transaction, transaction_categories: @transaction_categories }
+  # end
 
   def create
     @transaction = @family_group.transactions.build(transaction_params)
 
     if @transaction.save
-      redirect_to finances_family_group_transactions_path(@family_group), notice: "Transa\u00E7\u00E3o criada com sucesso."
+      respond_to do |format|
+        format.turbo_stream { redirect_to finances_transactions_path(@family_group), notice: "Transação criada com sucesso." }
+        format.html { redirect_to finances_transactions_path(@family_group), notice: "Transação criada com sucesso." }
+      end
     else
-      render :new
+      respond_to do |format|
+        format.turbo_stream { render :new }
+        format.html { render :new }
+      end
     end
   end
 
   def edit
+    @transaction = @family_group.transactions.find(params[:id])
+    @transaction_categories = TransactionCategory.joins(:category_type)
+                                 .where(category_types: { id: @transaction.transaction_category.category_type_id })
+                                 .order(:name)
   end
 
   def update
     if @transaction.update(transaction_params)
-      redirect_to finances_family_group_transaction_path(@family_group, @transaction), notice: "Transa\u00E7\u00E3o atualizada com sucesso."
+      redirect_to finances_transactions_path(@family_group), notice: "Transação atualizada com sucesso."
     else
       render :edit
     end
@@ -37,7 +87,7 @@ class Finances::TransactionsController < ApplicationController
 
   def destroy
     @transaction.destroy
-    redirect_to finances_family_group_transactions_path(@family_group), notice: "Transa\u00E7\u00E3o exclu\u00EDda com sucesso."
+    redirect_to finances_transactions_path(@family_group), notice: "Transação excluída com sucesso."
   end
 
   private
@@ -46,7 +96,6 @@ class Finances::TransactionsController < ApplicationController
     @family_group = current_user.family_groups.find_by(id: params[:family_group_id])
     unless @family_group
       redirect_to finances_home_path, alert: "Você não tem permissão para acessar este grupo familiar ou ele não existe."
-      puts "Você não tem permissão para acessar este grupo familiar ou ele não existe."
     end
   end
 

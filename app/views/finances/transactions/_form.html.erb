@@ -1,0 +1,25 @@
+<%= form_with model: transaction, url: new_by_category_type_path(transaction.family_group), data: { turbo_frame: "_top" } do |f| %>
+  <div>
+    <%= f.label :description, "Descrição" %>
+    <%= f.text_field :description %>
+  </div>
+
+  <div>
+    <%= f.label :amount, "Valor" %>
+    <%= f.number_field :amount, step: 0.01 %>
+  </div>
+
+  <div>
+    <%= f.label :transaction_category_id, "Categoria" %>
+    <%= f.collection_select :transaction_category_id, transaction_categories, :id, :name, prompt: "Selecione uma categoria" %>
+  </div>
+
+  <div>
+    <%= f.label :date, "Data" %>
+    <%= f.date_field :date %>
+  </div>
+
+  <div>
+    <%= f.submit "Salvar", class: "btn btn-primary" %>
+  </div>
+<% end %>

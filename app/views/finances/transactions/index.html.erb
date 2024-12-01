@@ -25,3 +25,9 @@
     <% end %>
   </tbody>
 </table>
+
+<%= link_to "Nova Receita", new_by_category_type_path(@family_group, "revenue"), data: { turbo_frame: "modal" }, class: "btn text-green-500" %> |
+<%= link_to "Novo Investimento", new_by_category_type_path(@family_group, "investment"), data: { turbo_frame: "modal" }, class: "btn text-blue-500" %> |
+<%= link_to "Nova Despesa Fixa", new_by_category_type_path(@family_group, "fixed-expenses"), data: { turbo_frame: "modal" }, class: "btn text-red-500" %> |
+<%= link_to "Nova Despesa Variável", new_by_category_type_path(@family_group, "variable-expenses"), data: { turbo_frame: "modal" }, class: "btn text-yellow-500" %> |
+
