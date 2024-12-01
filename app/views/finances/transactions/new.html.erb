@@ -1,5 +1,14 @@
 <%= turbo_frame_tag "modal" do %>
-  <h2>Nova Transação: <%= @transaction.name %></h2>
+  <%= content_tag :h2, 
+    class: [
+      "text-3xl font-black mb-5", 
+      @category_type === "Receitas" ? "text-green-500" : "",
+      @category_type === "Investimentos" ? "text-blue-500" : "",
+      @category_type === "Gastos Fixos" ? "text-red-500" : "",
+      @category_type === "Gastos Variáveis" ? "text-yellow-500" : ""
+    ] do %>
+    Nova Transação: <%= @category_type %>
+  <% end %>
 
   <%= form_with model: [@family_group, @transaction], url: new_by_category_type_path(@family_group), local: true do |form| %>
     <div class="form-group">

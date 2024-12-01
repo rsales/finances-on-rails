@@ -28,15 +28,10 @@ class Finances::TransactionsController < ApplicationController
     end
 
     category_type_key = params[:category_type]
-
-    # Converte a chave da URL para o nome do tipo de categoria
     category_type_name = CATEGORY_TYPE_MAP[category_type_key]
-
     @transaction_categories = TransactionCategory.joins(:category_type)
       .where(category_types: { name: category_type_name })
-      .where(family_group_id: @family_group.id) # Se for necessário garantir que é do grupo correto
-
-    # binding.pry
+      .where(family_group_id: @family_group.id)
 
     @transaction = @family_group.transactions.build
 
@@ -45,14 +40,6 @@ class Finances::TransactionsController < ApplicationController
       format.html { render :new }
     end
   end
-
-  # def new_by_category_type
-  #   category_type = params[:category_type]
-  #   @transaction_categories = TransactionCategory.joins(:category_type)
-  #                                                 .where(category_types: { key: category_type })
-  #   @transaction = @family_group.transactions.build
-  #   render partial: "form", locals: { transaction: @transaction, transaction_categories: @transaction_categories }
-  # end
 
   def create
     @transaction = @family_group.transactions.build(transaction_params)
@@ -73,8 +60,8 @@ class Finances::TransactionsController < ApplicationController
   def edit
     @transaction = @family_group.transactions.find(params[:id])
     @transaction_categories = TransactionCategory.joins(:category_type)
-                                 .where(category_types: { id: @transaction.transaction_category.category_type_id })
-                                 .order(:name)
+      .where(category_types: { id: @transaction.transaction_category.category_type_id })
+      .order(:name)
   end
 
   def update

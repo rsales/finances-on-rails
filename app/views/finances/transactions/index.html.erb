@@ -1,7 +1,5 @@
 <h1 class="font-black text-3xl text-blue-600">Transações de <%= @family_group.name %></h1>
 
-<%#= link_to "Nova Transação", new_finances_family_group_transaction_path(@family_group), class: "btn btn-primary" %>
-
 <table>
   <thead>
     <tr>
@@ -26,8 +24,29 @@
   </tbody>
 </table>
 
-<%= link_to "Nova Receita", new_by_category_type_path(@family_group, "revenue"), data: { turbo_frame: "modal" }, class: "btn text-green-500" %> |
-<%= link_to "Novo Investimento", new_by_category_type_path(@family_group, "investment"), data: { turbo_frame: "modal" }, class: "btn text-blue-500" %> |
-<%= link_to "Nova Despesa Fixa", new_by_category_type_path(@family_group, "fixed-expenses"), data: { turbo_frame: "modal" }, class: "btn text-red-500" %> |
-<%= link_to "Nova Despesa Variável", new_by_category_type_path(@family_group, "variable-expenses"), data: { turbo_frame: "modal" }, class: "btn text-yellow-500" %> |
-
+<div class="actions flex gap-2 mt-3">
+<%= 
+  link_to "Nova Receita", 
+  new_by_category_type_path(@family_group, "revenue"),
+  data: { turbo_frame: "modal" }, 
+  class: "btn bg-green-500 hover:bg-green-600 px-3 py-2 text-white rounded" 
+%>
+<%= 
+  link_to "Novo Investimento", 
+  new_by_category_type_path(@family_group, "investment"), 
+  data: { turbo_frame: "modal" }, 
+  class: "btn bg-blue-500 hover:bg-blue-600 px-3 py-2 text-white rounded"
+%>
+<%= 
+  link_to "Nova Despesa Fixa", 
+  new_by_category_type_path(@family_group, "fixed-expenses"), 
+  data: { turbo_frame: "modal" }, 
+  class: "btn bg-red-500 hover:bg-red-600 px-3 py-2 text-white rounded"
+%>
+<%= 
+  link_to "Nova Despesa Variável",
+  new_by_category_type_path(@family_group, "variable-expenses"),
+  data: { turbo_frame: "modal" },
+  class: "btn bg-yellow-500 hover:bg-yellow-600 px-3 py-2 text-white rounded"
+%>
+</div>
