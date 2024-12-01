@@ -1,6 +1,6 @@
 class Finances::BudgetsController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_family_group
+  before_action :set_and_authorize_family_group
 
   def index
     @months = @family_group.budgets.distinct.pluck(:month).sort.reverse
@@ -75,12 +75,13 @@ class Finances::BudgetsController < ApplicationController
 
   private
 
-  # Define o grupo familiar para os budgets
-  def set_family_group
-    @family_group = current_user.family_groups.find(params[:family_group_id])
+  def set_and_authorize_family_group
+    @family_group = current_user.family_groups.find_by(id: params[:family_group_id])
+    unless @family_group
+      redirect_to finances_home_path, alert: "Você não tem permissão para acessar este grupo familiar ou ele não existe."
+    end
   end
 
-  # Permite parâmetros para um único orçamento
   def budgets_params
     params.require(:budgets).permit(
       # Permite múltiplos orçamentos, cada um com esses atributos

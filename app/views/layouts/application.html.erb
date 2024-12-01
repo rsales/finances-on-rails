@@ -22,6 +22,70 @@
     <%= render SidebarComponent.new(current_user: current_user, family_group: @family_group) %>
 
     <main class="content w-full px-5 py-5">
+      <% if flash[:alert] %>
+        <div
+          class="font-regular relative block w-full rounded-lg bg-red-500 p-4 text-base leading-5 text-white opacity-100 mb-5"
+          data-dismissible="alert"
+        >
+          <div class="mr-12"><%= flash[:alert] %></div>
+          <div class="absolute top-2.5 right-3 w-max rounded-lg transition-all hover:bg-white hover:bg-opacity-20" data-dismissible-target="alert">
+            <%= link_to root_path do %>
+              <button
+                role="button"
+                class="w-max rounded-lg p-1"
+                data-alert-dimissible="true"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-6 w-6"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M6 18L18 6M6 6l12 12"
+                  ></path>
+                </svg>
+              </button>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+
+      <% if flash[:notice] %>
+        <div
+          class="font-regular relative block w-full rounded-lg bg-green-500 p-4 text-base leading-5 text-white opacity-100 mb-5"
+          data-dismissible="notice"
+        >
+          <div class="mr-12"><%= flash[:notice] %></div>
+          <div class="absolute top-2.5 right-3 w-max rounded-lg transition-all hover:bg-white hover:bg-opacity-20" data-dismissible-target="alert">
+            <button
+              role="button"
+              class="w-max rounded-lg p-1"
+              data-alert-dimissible="true"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-6 w-6"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M6 18L18 6M6 6l12 12"
+                ></path>
+              </svg>
+            </button>
+          </div>
+        </div>
+      <% end %>
+
       <%= yield %>
     </main>
   </body>
