@@ -4,26 +4,29 @@ class Finances::ConsolidatedController < ApplicationController
 
   def index
     @year = params[:year]&.to_i || Date.today.year
-    @consolidated_data = ConsolidatedDataService.new(@family_group, @year).call
+    @service = ConsolidatedDataService.new(@family_group, @year)
+    @consolidated_data = @service.call
 
-    # @chart_data = prepare_chart_data(@consolidated_data)
-    @chart_data = {
-      receitas: [ 5, 3, 7, 3, 7, 2, 2, 5, 2, 6, 2, 7 ],
-      gastos_fixos: [ 3, 7, 5, 6, 5, 2, 4, 7, 0, 6, 4, 2 ],
-      gastos_variaveis: [ 2, 1, 6, 4, 3, 4, 3, 7, 7, 2, 0, 5 ],
-      investimentos: [ 2, 4, 5, 3, 1, 4, 4, 5, 5, 5, 4, 1 ]
+    @chart_data = prepare_chart_data(@consolidated_data)
+  end
+
+  def prepare_chart_data(consolidated_data)
+    {
+      receitas: (1..12).map { |month| sum_monthly_totals(consolidated_data["Receitas"], month) },
+      gastos_fixos: (1..12).map { |month| sum_monthly_totals(consolidated_data["Gastos Fixos"], month) },
+      gastos_variaveis: (1..12).map { |month| sum_monthly_totals(consolidated_data["Gastos Variáveis"], month) },
+      investimentos: (1..12).map { |month| sum_monthly_totals(consolidated_data["Investimentos"], month) }
     }
   end
 
   private
 
-  def prepare_chart_data(consolidated_data)
-    {
-      receitas: (1..12).map { |month| consolidated_data["Receitas"]&.fetch(month, { total: 0 })[:total] },
-      gastos_fixos: (1..12).map { |month| consolidated_data["Gastos Fixos"]&.fetch(month, { total: 0 })[:total] },
-      gastos_variaveis: (1..12).map { |month| consolidated_data["Gastos Variáveis"]&.fetch(month, { total: 0 })[:total] },
-      investimentos: (1..12).map { |month| consolidated_data["Investimentos"]&.fetch(month, { total: 0 })[:total] }
-    }
+  def sum_monthly_totals(category_data, month)
+    return 0 unless category_data
+
+    category_data.values.reduce(0) do |sum, subcategory|
+      sum + (subcategory[month] || 0)
+    end
   end
 
   def set_and_authorize_family_group

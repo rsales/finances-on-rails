@@ -47,12 +47,98 @@ namespace :dev do
     puts "Budgets criados para o mês #{current_month}."
     puts "Budgets created successfully..."
 
-    puts "Create Transaction..."
-    Transaction.create(name: "Salário Storyblok", value: 5000.00, month: "2024-10", subscription: false, number_of_installments: 0, current_installment: 0, bank_account: bank_account1, transaction_category: TransactionCategory.find_or_create_by(name: "Salário"), family_group: family_group1)
-    Transaction.create(name: "Curso de RoR Udemy", value: 1500.00, month: "2024-10", subscription: true, number_of_installments: 12, current_installment: 1, bank_account: bank_account2, transaction_category: TransactionCategory.find_or_create_by(name: "Cursos"), family_group: family_group1)
+    puts "Creating mock transactions for the year 2024..."
+    # Categorias
+    salario_category = TransactionCategory.find_or_create_by(name: "Salário", family_group: family_group1)
+    cursos_category = TransactionCategory.find_or_create_by(name: "Cursos", family_group: family_group1)
+    aluguel_category = TransactionCategory.find_or_create_by(name: "Casa", family_group: family_group1)
+    supermercado_category = TransactionCategory.find_or_create_by(name: "Alimentação", family_group: family_group1)
+    investimentos_category = TransactionCategory.find_or_create_by(name: "Investimentos/Poupar", family_group: family_group1)
 
-    Transaction.create(name: "Salário Storyblok", value: 15000.00, month: "2024-11", subscription: false, number_of_installments: 0, current_installment: 0, bank_account: bank_account1, transaction_category: TransactionCategory.find_or_create_by(name: "Salário"), family_group: family_group1)
-    Transaction.create(name: "Curso de VUE 3", value: 500.00, month: "2024-11", subscription: true, number_of_installments: 12, current_installment: 1, bank_account: bank_account2, transaction_category: TransactionCategory.find_or_create_by(name: "Cursos"), family_group: family_group1)
-    puts "Transaction created successfully..."
+    # Mock de transações por mês
+    (1..12).each do |month|
+      formatted_month = format("%04d-%02d", 2024, month) # Formata como "2024-01", "2024-02", etc.
+
+      # Receita
+      Transaction.create!(
+        name: "Salário Mensal",
+        value: 5000.00 + rand(-200..200), # Valor flutua entre 4800 e 5200
+        month: formatted_month,
+        subscription: false,
+        number_of_installments: 0,
+        current_installment: 0,
+        bank_account: bank_account1,
+        transaction_category: salario_category,
+        family_group: family_group1
+      )
+
+      # Gastos Fixos
+      Transaction.create!(
+        name: "Aluguel",
+        value: 1500.00,
+        month: formatted_month,
+        subscription: false,
+        number_of_installments: 0,
+        current_installment: 0,
+        bank_account: bank_account1,
+        transaction_category: aluguel_category,
+        family_group: family_group1
+      )
+
+      # Gastos Variáveis
+      Transaction.create!(
+        name: "Compras no Supermercado",
+        value: 800.00 + rand(-100..100), # Valor flutua entre 700 e 900
+        month: formatted_month,
+        subscription: false,
+        number_of_installments: 0,
+        current_installment: 0,
+        bank_account: bank_account1,
+        transaction_category: supermercado_category,
+        family_group: family_group1
+      )
+
+      # Investimentos
+      Transaction.create!(
+        name: "Aporte Mensal em Investimentos",
+        value: 1000.00 + rand(-50..50), # Valor flutua entre 950 e 1050
+        month: formatted_month,
+        subscription: false,
+        number_of_installments: 0,
+        current_installment: 0,
+        bank_account: bank_account2,
+        transaction_category: investimentos_category,
+        family_group: family_group1
+      )
+
+      # Cursos (Gasto Variável com Parcelamento)
+      if month == 1 # Apenas iniciar um curso em janeiro
+        Transaction.create!(
+          name: "Curso de Ruby on Rails",
+          value: 1200.00,
+          month: formatted_month,
+          subscription: true,
+          number_of_installments: 12,
+          current_installment: 1,
+          bank_account: bank_account2,
+          transaction_category: cursos_category,
+          family_group: family_group1
+        )
+      elsif month <= 12 # Parcelas subsequentes
+        Transaction.create!(
+          name: "Curso de Ruby on Rails (Parcela #{month})",
+          value: 100.00, # Valor da parcela
+          month: formatted_month,
+          subscription: true,
+          number_of_installments: 12,
+          current_installment: month,
+          bank_account: bank_account2,
+          transaction_category: cursos_category,
+          family_group: family_group1
+        )
+      end
+    end
+
+    puts "Transactions for 2024 created successfully!"
   end
 end

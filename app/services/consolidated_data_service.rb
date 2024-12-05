@@ -33,26 +33,24 @@ class ConsolidatedDataService
   def calculate_monthly_data(category, transactions)
     monthly_values = (1..12).map do |month|
       relevant_transactions = transactions.select do |t|
-        # Comparando diretamente o mês (extraindo o número do mês da string "YYYY-MM")
-        t.transaction_category == category && t.month.split("-")[1].to_i == month
+        # Usando Date para garantir a extração correta do mês
+        t.transaction_category == category && Date.strptime(t.month, "%Y-%m").month == month
       end
 
       [ month, relevant_transactions.sum(&:value) ]
     end.to_h
 
-    total = monthly_values.values.compact.sum
+    total = monthly_values.values.sum
     percentage = calculate_percentage(total, transactions)
 
     monthly_values.merge(total: total, percentage: percentage)
   end
 
-
   # Calcular a porcentagem do RL
   def calculate_percentage(category_total, transactions)
-    total_per_month = (1..12).map do |month|
-      transactions.select { |t| t.month.to_i == month }.sum(&:value)
-    end
-    return 0 if total_per_month.sum == 0
-    (category_total.to_f / total_per_month.sum) * 100
+    total_transactions = transactions.sum(&:value)
+    return 0 if total_transactions == 0
+
+    (category_total.to_f / total_transactions) * 100
   end
 end
