@@ -43,6 +43,12 @@ gem "view_component", "~> 3.0"
 # Whenever is a Ruby gem that provides a clear syntax for writing and deploying cron jobs. [https://github.com/javan/whenever]
 gem "whenever", require: false
 
+# Create beautiful JavaScript charts with one line of Ruby [https://github.com/ankane/chartkick]
+# gem "chartkick"
+
+# The simplest way to group temporal data [https://github.com/ankane/groupdate]
+# gem "groupdate"
+
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem "debug", platforms: %i[ mri windows ], require: "debug/prelude"

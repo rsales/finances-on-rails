@@ -1,4 +1,4 @@
-<!--<div id="modal" class="modal fixed inset-0 z-10 overflow-hidden backdrop-blur-lg flex items-center justify-center transition-transform duration-300">
+<!--<div id="modal" class="modal fixed inset-0 z-10 overflow-hidden backdrop-blur-sm flex items-center justify-center transition-transform duration-300">
   <div id="modal-content" class="p-6 backdrop-blur-sm bg-red-500/90 w-11/12 sm:w-11/12 md:w-8/12 lg:w-6/12 rounded-md shadow-sm">
     <h2 class="text-2xl font-black mb-3">Lorem ipsum dolor sit amet consectetur adipisicing elit.</h2>
     <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Error magni dignissimos eius quisquam commodi totam ipsa quam non, modi ad. Perspiciatis alias unde modi repellat error laudantium aut delectus sed?</p><br>
@@ -22,7 +22,7 @@
       </h1>
     </div>
 
-    <div class="">
+    <div class="filter">
       <%= form_with(url: finances_transactions_path(@family_group), method: :get, local: true, data: { turbo_frame: "transactions" }) do |form| %>
         <div class="form-row flex gap-2">
           <div class="col-md-3">
@@ -67,7 +67,7 @@
       <div class="grid grid-cols-12 sm:grid-cols-2 lg:grid-cols-4 gap-3">
         <!--Receitas-->
         <%= link_to new_by_category_type_path(@family_group, "revenue"), data: { turbo_frame: "modal" } do %>
-          <div class="relative group overflow-hidden p-8 rounded-xl bg-white border border-gray-200 2border-gray-800 2bg-gray-900 cursor-pointer -z-10">
+          <div class="relative group overflow-hidden p-8 rounded-xl bg-white border border-gray-200 2border-gray-800 2bg-gray-900 cursor-pointer">
             <div aria-hidden="true" class="inset-0 absolute aspect-video border rounded-full -translate-y-1/2 group-hover:-translate-y-1/4 duration-300 bg-gradient-to-b from-green-500 to-white 2from-white 2to-white blur-2xl opacity-25 2opacity-5 2group-hover:opacity-10"></div>
             <div class="relative">
               <div class="flex gap-x-2 items-center">
@@ -93,7 +93,7 @@
         <% end %>
         <!--Investimentos-->
         <%= link_to new_by_category_type_path(@family_group, "investment"), data: { turbo_frame: "modal" } do %>
-          <div class="relative group overflow-hidden p-8 rounded-xl bg-white border border-gray-200 2border-gray-800 2bg-gray-900 cursor-pointer -z-10">
+          <div class="relative group overflow-hidden p-8 rounded-xl bg-white border border-gray-200 2border-gray-800 2bg-gray-900 cursor-pointer">
             <div aria-hidden="true" class="inset-0 absolute aspect-video border rounded-full -translate-y-1/2 group-hover:-translate-y-1/4 duration-300 bg-gradient-to-b from-blue-500 to-white 2from-white 2to-white blur-2xl opacity-25 2opacity-5 2group-hover:opacity-10"></div>
             <div class="relative">
               <div class="flex gap-x-2 items-center">
@@ -119,7 +119,7 @@
         <% end %>
         <!--Gastos Fixos-->
         <%= link_to new_by_category_type_path(@family_group, "fixed-expenses"), data: { turbo_frame: "modal" } do %>
-          <div class="relative group overflow-hidden p-8 rounded-xl bg-white border border-gray-200 2border-gray-800 2bg-gray-900 cursor-pointer -z-10">
+          <div class="relative group overflow-hidden p-8 rounded-xl bg-white border border-gray-200 2border-gray-800 2bg-gray-900 cursor-pointer">
             <div aria-hidden="true" class="inset-0 absolute aspect-video border rounded-full -translate-y-1/2 group-hover:-translate-y-1/4 duration-300 bg-gradient-to-b from-red-500 to-white 2from-white 2to-white blur-2xl opacity-25 2opacity-5 2group-hover:opacity-10"></div>
             <div class="relative">
               <div class="flex gap-x-2 items-center">
@@ -179,6 +179,7 @@
                 <thead class="bg-gray-50">
                   <tr>
                     <th scope="col" class="px-4 py-3.5  text-sm font-black text-left rtl:text-right text-gray-500">Descrição</th>
+                    <th scope="col" class="px-4 py-3.5  text-sm font-black text-left rtl:text-right text-gray-500">Tipo</th>
                     <th scope="col" class="px-4 py-3.5  text-sm font-black text-left rtl:text-right text-gray-500">Categoria</th>
                     <th scope="col" class="px-4 py-3.5  text-sm font-black text-left rtl:text-right text-gray-500">Valor</th>
                     <th scope="col" class="px-4 py-3.5  text-sm font-black text-left rtl:text-right text-gray-500">Data</th>
@@ -202,8 +203,13 @@
                               transaction.transaction_category.category_type.name === "Gastos Fixos" ? "bg-red-500" : "",
                               transaction.transaction_category.category_type.name === "Gastos Variáveis" ? "bg-yellow-500" : ""
                             ] do %>
-                              <%= transaction.transaction_category.name %>
+                              <%= transaction.transaction_category.category_type.name %>
                           <% end %>
+                        </td>
+                        <td class="px-4 py-2 text-sm font-bold whitespace-nowrap">
+                          <p class="text-sm font-normal text-gray-600 cursor-pointer">
+                            <%= transaction.transaction_category.name %>
+                          </p>
                         </td>
                         <td class="px-4 py-2 text-sm font-bold whitespace-nowrap">
                           <p class="text-sm font-normal text-gray-600 cursor-pointer">
@@ -219,7 +225,7 @@
                     <% end %>
                   <% else %>
                     <tr>
-                      <td colspan="4" class="px-4 py-10 text-sm font-bold text-center text-gray-600">
+                      <td colspan="5" class="px-4 py-10 text-sm font-bold text-center text-gray-600">
                         Nenhuma transação encontrada para o período selecionado.
                       </td>
                     </tr>

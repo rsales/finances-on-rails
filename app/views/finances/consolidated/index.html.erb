@@ -26,6 +26,19 @@
     <% end %>
   </section>
 
+  <section class="col-span-12 mt-6">
+    <canvas id="consolidatedChart" width="400" height="100"></canvas>
+    <script type="application/json" id="chart-data">
+      <%= @chart_data.to_json.html_safe %>
+    </script>
+  </section>
+
+  <pre>
+  <code class="language-json">
+    <%= @chart_data.to_json %>
+  </code>
+  </pre>
+
   <section class="col-span-12">
     <div class="flex flex-col mt-6 w-full">
       <div class="overflow-x-auto">
