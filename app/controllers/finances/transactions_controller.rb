@@ -10,18 +10,39 @@ class Finances::TransactionsController < ApplicationController
     "variable-expenses" => "Gastos Variáveis"
   }
 
-  # def index
-  #   @transactions = @family_group.transactions
-  # end
   def index
-    # Pegando o mês da URL (caso o mês não seja selecionado, será nil)
-    @month = params[:month].to_i
+    if params[:month].present?
+      begin
+        @month = Date.parse("#{params[:month]}-01")
+      rescue ArgumentError => e
+        @month = Date.today
+      end
+    else
+      @month = Date.today
+    end
 
-    # Filtrar transações de acordo com o mês, caso um mês tenha sido selecionado
     @transactions = @family_group.transactions
-    if @month.present? && @month.between?(1, 12)
-      # Filtra as transações para o mês selecionado
-      @transactions = @transactions.where("extract(month from date) = ?", @month)
+    @category_types = CategoryType.all
+
+    if @month
+      start_of_month = @month.beginning_of_month
+      end_of_month = @month.end_of_month
+
+      @transactions = @transactions.where(month: start_of_month.strftime("%Y-%m")..end_of_month.strftime("%Y-%m"))
+    end
+
+    if params[:category_type].present?
+      @category_type = params[:category_type] # Captura o parâmetro enviado
+      @transactions = @transactions.joins(transaction_category: :category_type)
+        .where(category_types: { name: @category_type })
+    end
+
+    @totals_by_category_type = CategoryType.all.each_with_object({}) do |category_type, hash|
+      total_value = @transactions.joins(:transaction_category)
+                                .where(transaction_categories: { category_type_id: category_type.id })
+                                .sum(:value)
+
+      hash[category_type.name] = total_value
     end
   end
 
