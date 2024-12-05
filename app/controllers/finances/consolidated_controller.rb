@@ -3,7 +3,11 @@ class Finances::ConsolidatedController < ApplicationController
   before_action :set_and_authorize_family_group
 
   def index
-    @consolidated_data = ConsolidatedDataService.new(@family_group).call
+    # Define o ano com base no parâmetro da URL ou usa o ano atual como padrão
+    @year = params[:year]&.to_i || Date.today.year
+
+    # Passa o parâmetro do ano para o serviço
+    @consolidated_data = ConsolidatedDataService.new(@family_group, @year).call
   end
 
   private

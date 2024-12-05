@@ -11,119 +11,136 @@
     </h1>
   </div>
 
+  <section class="col-span-12 mt-5">
+    <%= form_with url: finances_consolidated_path(@family_group), method: :get, local: true, class: "mb-4", data: { turbo_frame: "transactions" } do |form| %>
+      <div class="form-row flex gap-2">
+        <div class="col-md-3">
+          <%= 
+            select_tag :year, 
+            options_for_select((Date.today.year - 5..Date.today.year).to_a.reverse, params[:year] || Date.today.year), 
+            class: "form-control",
+            onchange: "this.form.submit()"
+          %>
+        </div>
+      </div>
+    <% end %>
+  </section>
+
   <section class="col-span-12">
     <div class="flex flex-col mt-6 w-full">
       <div class="overflow-x-auto">
         <div class="inline-block min-w-full align-middle">
           <div class="overflow-hidden border border-gray-200 md:rounded-lg">
-            <table class="min-w-full divide-y divide-gray-200">
-              <thead class="bg-gray-50">
-                <tr>
-                  <th scope="col" class="px-4 py-3.5  text-sm font-black text-left rtl:text-right text-gray-500">
-                    Categoria
-                  </th>
-                  <% (1..12).each do |month| %>
-                    <th scope="col" class="px-4 py-3.5 text-sm font-black text-left rtl:text-right text-gray-500">
-                      <%= Date::ABBR_MONTHNAMES[month] %>
-                    </th>
-                  <% end %>
-                  <th scope="col" class="px-4 py-3.5 text-sm font-black text-left rtl:text-right text-gray-500">
-                    Total
-                  </th>
-                  <th scope="col" class="px-4 py-3.5 text-sm font-black text-left rtl:text-right text-gray-500">
-                    % RL
-                  </th>
-                </tr>
-              </thead>
-              <tbody class="bg-white divide-y divide-gray-200">
-                <% @consolidated_data.each do |category_type, categories| %>
-                  <!-- Agrupamento por Tipo de Categoria -->
+            <%= turbo_frame_tag "consolidated_data" do %>
+              <table class="min-w-full divide-y divide-gray-200">
+                <thead class="bg-gray-50">
                   <tr>
-                    <td class="px-2 py-2 text-sm font-bold whitespace-nowrap bg-gray-100" colspan="15">
-                      <%= category_type %>
-                    </td>
+                    <th scope="col" class="px-4 py-3.5  text-sm font-black text-left rtl:text-right text-gray-500">
+                      Categoria
+                    </th>
+                    <% (1..12).each do |month| %>
+                      <th scope="col" class="px-4 py-3.5 text-sm font-black text-left rtl:text-right text-gray-500">
+                        <%= Date::ABBR_MONTHNAMES[month] %>
+                      </th>
+                    <% end %>
+                    <th scope="col" class="px-4 py-3.5 text-sm font-black text-left rtl:text-right text-gray-500">
+                      Total
+                    </th>
+                    <th scope="col" class="px-4 py-3.5 text-sm font-black text-left rtl:text-right text-gray-500">
+                      % RL
+                    </th>
                   </tr>
-
-                  <% categories.each do |category_name, monthly_values| %>
-                    <!-- Detalhes de cada Categoria -->
-                      <td class="px-4 py-2 text-sm font-bold whitespace-nowrap">
-                        <p class="text-sm text-gray-600 font-bold">
-                          <%= category_name %>
-                        </p>
-                      </td>
-                      <% (1..12).each do |month| %>
-                        <td class="px-4 py-2 text-sm font-medium whitespace-nowrap">
-                          <p class="text-sm font-normal text-gray-600 cursor-pointer">
-                            <%= monthly_values[month] ? number_to_currency(monthly_values[month]) : "-" %>
-                          </p>
-                        </td>
-                      <% end %>
-                      <td class="px-4 py-2 text-sm font-bold whitespace-nowrap">
-                        <p class="text-sm font-bold text-gray-600 cursor-pointer">
-                          <%= number_to_currency(monthly_values[:total]) %>
-                        </p>
-                      </td>
-                      <td class="px-4 py-2 text-sm font-bold whitespace-nowrap">
-                        <p class="text-sm font-bold text-gray-600 cursor-pointer">
-                          <%= number_to_percentage(monthly_values[:percentage], precision: 2) %>
-                        </p>
+                </thead>
+                <tbody class="bg-white divide-y divide-gray-200">
+                  <% @consolidated_data.each do |category_type, categories| %>
+                    <!-- Agrupamento por Tipo de Categoria -->
+                    <tr>
+                      <td class="px-2 py-2 text-sm font-bold whitespace-nowrap bg-gray-100" colspan="15">
+                        <%= category_type %>
                       </td>
                     </tr>
+
+                    <% categories.each do |category_name, monthly_values| %>
+                      <!-- Detalhes de cada Categoria -->
+                        <td class="px-4 py-2 text-sm font-bold whitespace-nowrap">
+                          <p class="text-sm text-gray-600 font-bold">
+                            <%= category_name %>
+                          </p>
+                        </td>
+                        <% (1..12).each do |month| %>
+                          <td class="px-4 py-2 text-sm font-medium whitespace-nowrap">
+                            <p class="text-sm font-normal text-gray-600 cursor-pointer">
+                              <%= monthly_values[month] ? number_to_currency(monthly_values[month]) : "-" %>
+                            </p>
+                          </td>
+                        <% end %>
+                        <td class="px-4 py-2 text-sm font-bold whitespace-nowrap">
+                          <p class="text-sm font-bold text-gray-600 cursor-pointer">
+                            <%= number_to_currency(monthly_values[:total]) %>
+                          </p>
+                        </td>
+                        <td class="px-4 py-2 text-sm font-bold whitespace-nowrap">
+                          <p class="text-sm font-bold text-gray-600 cursor-pointer">
+                            <%= number_to_percentage(monthly_values[:percentage], precision: 2) %>
+                          </p>
+                        </td>
+                      </tr>
+                    <% end %>
                   <% end %>
-                <% end %>
-              </tbody>
-              <tfoot>
-                <tr class="bg-gray-500 text-white font-bold">
-                  <th class="px-4 py-2 text-sm whitespace-nowrap text-left">
-                    Total Geral
-                  </th>
-                  <% (1..12).each do |month| %>
+                </tbody>
+                <tfoot>
+                  <tr class="bg-gray-500 text-white font-bold">
+                    <th class="px-4 py-2 text-sm whitespace-nowrap text-left">
+                      Total Geral
+                    </th>
+                    <% (1..12).each do |month| %>
+                      <th class="px-4 py-2 text-sm whitespace-nowrap text-left">
+                        <%= number_to_currency(
+                          @consolidated_data.sum do |category_type, categories|
+                            categories.sum do |category_name, values|
+                              # Verificar se o tipo de categoria é Receita, se sim, soma, se não, subtrai
+                              if category_type == "Receitas"
+                                values[month].to_f
+                              else
+                                -values[month].to_f # Subtrai para Investimentos, Gastos Fixos, e Gastos Variáveis
+                              end
+                            end
+                          end
+                        ) %>
+                      </th>
+                    <% end %>
                     <th class="px-4 py-2 text-sm whitespace-nowrap text-left">
                       <%= number_to_currency(
                         @consolidated_data.sum do |category_type, categories|
                           categories.sum do |category_name, values|
                             # Verificar se o tipo de categoria é Receita, se sim, soma, se não, subtrai
                             if category_type == "Receitas"
-                              values[month].to_f
+                              values[:total].to_f
                             else
-                              -values[month].to_f # Subtrai para Investimentos, Gastos Fixos, e Gastos Variáveis
+                              -values[:total].to_f # Subtrai para Investimentos, Gastos Fixos, e Gastos Variáveis
                             end
                           end
                         end
                       ) %>
                     </th>
-                  <% end %>
-                  <th class="px-4 py-2 text-sm whitespace-nowrap text-left">
-                    <%= number_to_currency(
-                      @consolidated_data.sum do |category_type, categories|
-                        categories.sum do |category_name, values|
-                          # Verificar se o tipo de categoria é Receita, se sim, soma, se não, subtrai
-                          if category_type == "Receitas"
-                            values[:total].to_f
-                          else
-                            -values[:total].to_f # Subtrai para Investimentos, Gastos Fixos, e Gastos Variáveis
+                    <th class="px-4 py-2 text-sm whitespace-nowrap text-left">
+                      <%= number_to_percentage(
+                        @consolidated_data.sum do |category_type, categories|
+                          categories.sum do |category_name, values|
+                            # Verificar se o tipo de categoria é Receita, se sim, soma, se não, subtrai
+                            if category_type == "Receitas"
+                              values[:percentage].to_f
+                            else
+                              -values[:percentage].to_f # Subtrai para Investimentos, Gastos Fixos, e Gastos Variáveis
+                            end
                           end
-                        end
-                      end
-                    ) %>
-                  </th>
-                  <th class="px-4 py-2 text-sm whitespace-nowrap text-left">
-                    <%= number_to_percentage(
-                      @consolidated_data.sum do |category_type, categories|
-                        categories.sum do |category_name, values|
-                          # Verificar se o tipo de categoria é Receita, se sim, soma, se não, subtrai
-                          if category_type == "Receitas"
-                            values[:percentage].to_f
-                          else
-                            -values[:percentage].to_f # Subtrai para Investimentos, Gastos Fixos, e Gastos Variáveis
-                          end
-                        end
-                      end / 12, precision: 2
-                    ) %>
-                  </th>
-                </tr>
-              </tfoot>
-            </table>
+                        end / 12, precision: 2
+                      ) %>
+                    </th>
+                  </tr>
+                </tfoot>
+              </table>
+            <% end %>
           </div>
         </div>
       </div>

@@ -1,6 +1,7 @@
 class ConsolidatedDataService
-  def initialize(family_group)
+  def initialize(family_group, year)
     @family_group = family_group
+    @year = year
   end
 
   def call
@@ -10,8 +11,10 @@ class ConsolidatedDataService
       .or(TransactionCategory.where(family_group_id: @family_group.id)) # Caso exista uma relação direta
       .includes(:category_type)
 
-    # Carregar as transações, incluindo as categorias
-    transactions = @family_group.transactions.includes(:transaction_category)
+    # Carregar as transações dentro do ano especificado, incluindo as categorias
+    transactions = @family_group.transactions
+      .includes(:transaction_category)
+      .where("month LIKE ?", "#{@year}-%") # Filtra as transações do ano
 
     # Agrupar as transações por category_type e transaction_category
     grouped_data = transaction_categories.group_by { |cat| cat.category_type.name }.transform_values do |categories|
