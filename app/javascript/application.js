@@ -3,7 +3,9 @@ import "@hotwired/turbo-rails"
 import "controllers"
 import "chart.js"
 
+
 document.addEventListener("turbo:load", () => {
+  const spinner = document.getElementById("loading-spinner");
   const chartElement = document.getElementById("consolidatedChart");
 
   if (chartElement) {
@@ -14,7 +16,7 @@ document.addEventListener("turbo:load", () => {
       "Jul", "Ago", "Set", "Out", "Nov", "Dez"
     ];
 
-    window.chartColors = {
+    const chartColors = {
       red: "rgba(255, 99, 132, 1)",
       orange: "rgba(255, 159, 64, 1)",
       yellow: "rgba(255, 205, 86, 1)",
@@ -24,90 +26,101 @@ document.addEventListener("turbo:load", () => {
       grey: "rgba(231, 233, 237, 1)"
     };
 
-    var barChartData = {
+    const barChartData = {
       labels: labels,
       datasets: [
         {
           label: "Receita",
-          backgroundColor: window.chartColors.green,
-          borderColor: window.chartColors.green,
-          yAxisID: "y-axis-2",
+          backgroundColor: chartColors.green,
+          borderColor: chartColors.green,
           data: data.gastos_fixos,
           type: "line",
-          fill: false,
+          borderWidth: 2,
+          tension: 0.4,
+          yAxisID: "y2",
+          fill: false
         },
         {
           label: "Gastos Fixos",
-          backgroundColor: window.chartColors.red,
-          yAxisID: "y-axis-1",
-          data: data.receitas
+          backgroundColor: chartColors.red,
+          data: data.receitas,
+          barThickness: 40,
+          yAxisID: "y"
         },
         {
           label: "Gastos Variáveis",
-          backgroundColor: window.chartColors.yellow,
-          yAxisID: "y-axis-1",
-          data: data.gastos_variaveis
+          backgroundColor: chartColors.yellow,
+          data: data.gastos_variaveis,
+          barThickness: 40,
+          yAxisID: "y"
         },
         {
           label: "Investimentos",
-          backgroundColor: window.chartColors.blue,
-          yAxisID: "y-axis-1",
-          data: data.investimentos
-        },
+          backgroundColor: chartColors.blue,
+          data: data.investimentos,
+          barThickness: 40,
+          yAxisID: "y"
+        }
       ]
     };
 
-    setTimeout(function() {
+    setTimeout(() => {
       const ctx = chartElement.getContext("2d");
+
       window.myBar = new Chart(ctx, {
         type: "bar",
         data: barChartData,
         options: {
           responsive: true,
-          title: {
-            display: false,
-            text: "Chart.js Bar Chart - Multi Axis"
-          },
-          tooltips: {
-            mode: "index",
-            intersect: true
+          plugins: {
+            tooltip: {
+              mode: "index",
+              intersect: true
+            },
+            legend: {
+              display: true,
+              position: "bottom",
+              align: "start"
+            },
+            title: {
+              display: false,
+              text: "Chart.js Bar Chart - Multi Axis"
+            }
           },
           scales: {
-            xAxes: [
-              {
-                stacked: true,
-                barThickness: 40,
-              }
-            ],
-            yAxes: [
-              {
-                type: "linear",
-                stacked: true,
-                display: true,
-                position: "left",
-                id: "y-axis-1",
-                ticks: {
-                  beginAtZero: true,
-                  suggestedMin: 0,
-                  suggestedMax: 10,
-                  min: 0
-                }
-              },
-              {
-                type: "linear",
+            x: {
+              stacked: true,
+              title: {
                 display: false,
-                id: "y-axis-2",
-                ticks: {
-                  beginAtZero: true,
-                  suggestedMin: 0,
-                  suggestedMax: 10,
-                  min: 0
-                }
+                text: "Meses"
               }
-            ]
+            },
+            y: {
+              type: "linear",
+              stacked: true,
+              position: "left",
+              beginAtZero: true,
+              ticks: {
+                stepSize: 2
+              }
+            },
+            y2: {
+              type: "linear",
+              position: "right",
+              beginAtZero: true,
+              grid: {
+                drawOnChartArea: false // Remove as linhas do grid no lado direito
+              },
+              ticks: {
+                display: false,
+              }
+            }
           }
         }
       });
-    }, 500);
-  };
+
+      spinner.style.display = "none";
+      chartElement.style.display = "block";
+    }, 950);
+  }
 });

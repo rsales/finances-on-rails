@@ -1,33 +1,39 @@
+<script src="https://unpkg.com/@dotlottie/player-component@2.7.12/dist/dotlottie-player.mjs" type="module"></script>
+
 <div class="individual-content grid gap-x-3	grid-cols-12">
-  <div class="hero-card bg-white rounded col-span-12 px-5 py-4">
-    <div class="flex text-base text-gray-400 mb-2 gap-1">
-      <svg  xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-hand-coins"><path d="M11 15h2a2 2 0 1 0 0-4h-3c-.6 0-1.1.2-1.4.6L3 17"/><path d="m7 21 1.6-1.4c.3-.4.8-.6 1.4-.6h4c1.1 0 2.1-.4 2.8-1.2l4.6-4.4a2 2 0 0 0-2.75-2.91l-4.2 3.9"/><path d="m2 16 6 6"/><circle cx="16" cy="9" r="2.9"/><circle cx="6" cy="5" r="3"/></svg>
-      <p>
-        Consolidado:
-      </p>
+  <div class="hero-card bg-white rounded col-span-12 px-5 py-4 flex items-center">
+    <div class="principal-content flex-1">
+      <div class="flex text-base text-gray-400 mb-2 gap-1">
+        <svg  xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-hand-coins"><path d="M11 15h2a2 2 0 1 0 0-4h-3c-.6 0-1.1.2-1.4.6L3 17"/><path d="m7 21 1.6-1.4c.3-.4.8-.6 1.4-.6h4c1.1 0 2.1-.4 2.8-1.2l4.6-4.4a2 2 0 0 0-2.75-2.91l-4.2 3.9"/><path d="m2 16 6 6"/><circle cx="16" cy="9" r="2.9"/><circle cx="6" cy="5" r="3"/></svg>
+        <p>
+          Consolidado:
+        </p>
+      </div>
+      <h1 class="font-black text-3xl text-gray-700">
+        <%= @family_group.name %>
+      </h1>
     </div>
-    <h1 class="font-black text-3xl text-gray-700">
-      <%= @family_group.name %>
-    </h1>
+
+    <div class="filter">
+      <%= form_with url: finances_consolidated_path(@family_group), method: :get, local: true, data: { turbo_frame: "transactions" } do |form| %>
+        <%= 
+          select_tag :year, 
+          options_for_select((Date.today.year - 5..Date.today.year).to_a.reverse, params[:year] || Date.today.year), 
+          class: "form-control",
+          onchange: "this.form.submit()"
+        %>
+      <% end %>
+    </div>
   </div>
 
-  <section class="col-span-12 mt-5">
-    <%= form_with url: finances_consolidated_path(@family_group), method: :get, local: true, class: "mb-4", data: { turbo_frame: "transactions" } do |form| %>
-      <div class="form-row flex gap-2">
-        <div class="col-md-3">
-          <%= 
-            select_tag :year, 
-            options_for_select((Date.today.year - 5..Date.today.year).to_a.reverse, params[:year] || Date.today.year), 
-            class: "form-control",
-            onchange: "this.form.submit()"
-          %>
-        </div>
-      </div>
-    <% end %>
-  </section>
-
-  <section class="col-span-12 mt-6">
-    <canvas id="consolidatedChart" width="400" height="100"></canvas>
+  <section class="bg-white rounded col-span-12 flex justify-center items-center mt-6 h-[350px]">    
+    <!-- Spinner -->
+    <div id="loading-spinner" class="py-10">
+      <%= image_tag("Animation - 1733439059325.gif", class: "max-w-60 h-60") %>
+    </div>
+    
+    <!-- Chart -->
+    <canvas id="consolidatedChart" class="hidden" width="370" height="100"></canvas>
     <script type="application/json" id="chart-data">
       <%= @chart_data.to_json.html_safe %>
     </script>
@@ -81,13 +87,13 @@
                         <% (1..12).each do |month| %>
                           <td class="px-4 py-2 text-sm font-medium whitespace-nowrap">
                             <p class="text-sm font-normal text-gray-600 cursor-pointer">
-                              <%= monthly_values[month] ? number_to_currency(monthly_values[month]) : "-" %>
+                              <%= monthly_values[month] ? number_to_currency(monthly_values[month], locale: 'pt-BR') : "-" %>
                             </p>
                           </td>
                         <% end %>
                         <td class="px-4 py-2 text-sm font-bold whitespace-nowrap">
                           <p class="text-sm font-bold text-gray-600 cursor-pointer">
-                            <%= number_to_currency(monthly_values[:total]) %>
+                            <%= number_to_currency(monthly_values[:total], locale: 'pt-BR') %>
                           </p>
                         </td>
                         <td class="px-4 py-2 text-sm font-bold whitespace-nowrap">
@@ -116,7 +122,7 @@
                                 -values[month].to_f # Subtrai para Investimentos, Gastos Fixos, e Gastos Variáveis
                               end
                             end
-                          end
+                          end, locale: 'pt-BR'                          
                         ) %>
                       </th>
                     <% end %>
@@ -131,7 +137,7 @@
                               -values[:total].to_f # Subtrai para Investimentos, Gastos Fixos, e Gastos Variáveis
                             end
                           end
-                        end
+                        end, locale: 'pt-BR'
                       ) %>
                     </th>
                     <th class="px-4 py-2 text-sm whitespace-nowrap text-left">
