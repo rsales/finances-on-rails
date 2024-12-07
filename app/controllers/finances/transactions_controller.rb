@@ -2,6 +2,7 @@ class Finances::TransactionsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_and_authorize_family_group
   before_action :set_transaction, only: [ :show, :edit, :update, :destroy ]
+  helper_method :new_url
 
   CATEGORY_TYPE_MAP = {
     "revenue" => "Receitas",
@@ -9,6 +10,19 @@ class Finances::TransactionsController < ApplicationController
     "fixed-expenses" => "Gastos Fixos",
     "variable-expenses" => "Gastos Variáveis"
   }
+
+  def new_url(params)
+    case params
+    when "Receitas"
+      "revenue"
+    when "Investimentos"
+      "investment"
+    when "Gastos Fixos"
+      "fixed-expenses"
+    else
+      "variable-expenses"
+    end
+  end
 
   def index
     if params[:month].present?

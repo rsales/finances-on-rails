@@ -3,7 +3,6 @@ import "@hotwired/turbo-rails"
 import "controllers"
 import "chart.js"
 
-
 document.addEventListener("turbo:load", () => {
   const spinner = document.getElementById("loading-spinner");
   const chartElement = document.getElementById("consolidatedChart");
@@ -33,7 +32,7 @@ document.addEventListener("turbo:load", () => {
           label: "Receita",
           backgroundColor: chartColors.green,
           borderColor: chartColors.green,
-          data: data.gastos_fixos,
+          data: data.receitas,
           type: "line",
           borderWidth: 2,
           tension: 0.4,
@@ -43,7 +42,7 @@ document.addEventListener("turbo:load", () => {
         {
           label: "Gastos Fixos",
           backgroundColor: chartColors.red,
-          data: data.receitas,
+          data: data.gastos_fixos,
           barThickness: 40,
           yAxisID: "y"
         },
@@ -80,7 +79,10 @@ document.addEventListener("turbo:load", () => {
             legend: {
               display: true,
               position: "bottom",
-              align: "start"
+              align: "start",
+              labels: {
+                usePointStyle: "circle",
+              },
             },
             title: {
               display: false,
@@ -100,19 +102,22 @@ document.addEventListener("turbo:load", () => {
               stacked: true,
               position: "left",
               beginAtZero: true,
+              max: 6000,
               ticks: {
-                stepSize: 2
+                stepSize: 2,
               }
             },
             y2: {
               type: "linear",
               position: "right",
               beginAtZero: true,
+              max: 6000,
               grid: {
                 drawOnChartArea: false // Remove as linhas do grid no lado direito
               },
               ticks: {
                 display: false,
+                stepSize: 2,
               }
             }
           }

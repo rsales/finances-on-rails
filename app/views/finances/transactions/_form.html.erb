@@ -1,25 +1,154 @@
-<%= form_with model: transaction, url: new_by_category_type_path(transaction.family_group), data: { turbo_frame: "_top" } do |f| %>
-  <div>
-    <%= f.label :description, "Descrição" %>
-    <%= f.text_field :description %>
-  </div>
+<%#= form_with model: transaction, url: new_by_category_type_path(transaction.family_group), data: { turbo_frame: "_top" } do |f| %>
+<!--  <div>-->
+    <%#= f.label :description, "Descrição" %>
+    <%#= f.text_field :description %>
+<!--  </div>
 
   <div>
-    <%= f.label :amount, "Valor" %>
-    <%= f.number_field :amount, step: 0.01 %>
-  </div>
+    <%#= f.label :amount, "Valor" %>-->
+    <%#= f.number_field :amount, step: 0.01 %>
+<!--  </div>
 
   <div>
-    <%= f.label :transaction_category_id, "Categoria" %>
-    <%= f.collection_select :transaction_category_id, transaction_categories, :id, :name, prompt: "Selecione uma categoria" %>
-  </div>
+    <%#= f.label :transaction_category_id, "Categoria" %>-->
+    <%#= f.collection_select :transaction_category_id, transaction_categories, :id, :name, prompt: "Selecione uma categoria" %>
+<!--  </div>
 
   <div>
-    <%= f.label :date, "Data" %>
-    <%= f.date_field :date %>
-  </div>
+    <%#= f.label :date, "Data" %>-->
+    <%#= f.date_field :date %>
+<!--  </div>
 
   <div>
-    <%= f.submit "Salvar", class: "btn btn-primary" %>
+    <%#= f.submit "Salvar", class: "btn btn-primary" %>-->
+<!--  </div>-->
+<%# end %>
+<!---->
+
+<h2 class="text-2xl font-bold text-gray-800 mb-6">Nova Transação</h2>
+<form action="/your_form_action" method="post">
+  <!-- Nome -->
+  <div class="mb-4">
+    <label for="name" class="block text-sm font-medium text-gray-700">Nome</label>
+    <input 
+      type="text" 
+      id="name" 
+      name="name" 
+      placeholder="Ex: Compras no Supermercado"
+      class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+    />
   </div>
-<% end %>
+
+  <!-- Valor -->
+  <div class="mb-4">
+    <label for="value" class="block text-sm font-medium text-gray-700">Valor</label>
+    <input 
+      type="number" 
+      id="value" 
+      name="value" 
+      placeholder="Ex: 800.00"
+      step="0.01"
+      class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+    />
+  </div>
+
+  <!-- Mês -->
+  <div class="mb-4">
+    <label for="month" class="block text-sm font-medium text-gray-700">Mês</label>
+    <input 
+      type="month" 
+      id="month" 
+      name="month"
+      class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+    />
+  </div>
+
+  <!-- Subscrição -->
+  <div class="mb-4">
+    <label for="subscription" class="block text-sm font-medium text-gray-700">É uma assinatura?</label>
+    <select 
+      id="subscription" 
+      name="subscription" 
+      class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+    >
+      <option value="false">Não</option>
+      <option value="true">Sim</option>
+    </select>
+  </div>
+
+  <!-- Número de Parcelas -->
+  <div class="mb-4">
+    <label for="number_of_installments" class="block text-sm font-medium text-gray-700">Número de Parcelas</label>
+    <input 
+      type="number" 
+      id="number_of_installments" 
+      name="number_of_installments" 
+      placeholder="Ex: 0 para compra única"
+      class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+    />
+  </div>
+
+  <!-- Parcela Atual -->
+  <div class="mb-4">
+    <label for="current_installment" class="block text-sm font-medium text-gray-700">Parcela Atual</label>
+    <input 
+      type="number" 
+      id="current_installment" 
+      name="current_installment" 
+      placeholder="Ex: 0"
+      class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+    />
+  </div>
+
+  <!-- Conta Bancária -->
+  <div class="mb-4">
+    <label for="bank_account" class="block text-sm font-medium text-gray-700">Conta Bancária</label>
+    <select 
+      id="bank_account" 
+      name="bank_account" 
+      class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+    >
+      <!-- Substitua os valores abaixo pelos seus dados dinâmicos -->
+      <option value="1">Conta Banco 1</option>
+      <option value="2">Conta Banco 2</option>
+    </select>
+  </div>
+
+  <!-- Categoria da Transação -->
+  <div class="mb-4">
+    <label for="transaction_category" class="block text-sm font-medium text-gray-700">Categoria</label>
+    <select 
+      id="transaction_category" 
+      name="transaction_category" 
+      class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+    >
+      <!-- Substitua os valores abaixo pelos seus dados dinâmicos -->
+      <option value="supermercado">Supermercado</option>
+      <option value="outro">Outro</option>
+    </select>
+  </div>
+
+  <!-- Grupo Familiar -->
+  <div class="mb-4">
+    <label for="family_group" class="block text-sm font-medium text-gray-700">Grupo Familiar</label>
+    <select 
+      id="family_group" 
+      name="family_group" 
+      class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+    >
+      <!-- Substitua os valores abaixo pelos seus dados dinâmicos -->
+      <option value="family_group1">Grupo Familiar 1</option>
+      <option value="family_group2">Grupo Familiar 2</option>
+    </select>
+  </div>
+
+  <!-- Botão de Enviar -->
+  <div class="mt-6">
+    <button 
+      type="submit" 
+      class="w-full bg-blue-500 text-white py-2 px-4 rounded-md shadow-sm hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2"
+    >
+      Salvar Transação
+    </button>
+  </div>
+</form>
