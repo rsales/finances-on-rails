@@ -1,33 +1,32 @@
-<%#= form_with model: transaction, url: new_by_category_type_path(transaction.family_group), data: { turbo_frame: "_top" } do |f| %>
-<!--  <div>-->
-    <%#= f.label :description, "Descrição" %>
-    <%#= f.text_field :description %>
+<%#= form_with model: [@family_group, @transaction], url: new_by_category_type_path(@family_group), local: false do |form| %>
+<!--  <div class="form-group">-->
+    <%#= form.label :description %>
+    <%#= form.text_field :description, class: "form-control" %>
 <!--  </div>
 
-  <div>
-    <%#= f.label :amount, "Valor" %>-->
-    <%#= f.number_field :amount, step: 0.01 %>
+  <div class="form-group">
+    <%#= form.label :amount %>-->
+    <%#= form.number_field :amount, class: "form-control" %>
 <!--  </div>
 
-  <div>
-    <%#= f.label :transaction_category_id, "Categoria" %>-->
-    <%#= f.collection_select :transaction_category_id, transaction_categories, :id, :name, prompt: "Selecione uma categoria" %>
+  <div class="form-group">
+    <%#= form.label :transaction_category_id, "Categoria" %>-->
+    <%#= form.collection_select :transaction_category_id, @transaction_categories, :id, :name, { prompt: "Selecione uma categoria" }, class: "form-control" %>
 <!--  </div>
 
-  <div>
-    <%#= f.label :date, "Data" %>-->
-    <%#= f.date_field :date %>
+  <div class="form-group">
+    <%#= form.label :date %>-->
+    <%#= form.date_field :date, class: "form-control" %>
 <!--  </div>
 
-  <div>
-    <%#= f.submit "Salvar", class: "btn btn-primary" %>-->
+  <div class="form-group">
+    <%#= form.submit "Criar Transação", class: "btn btn-primary" %>-->
 <!--  </div>-->
 <%# end %>
-<!---->
+
 
 <h2 class="text-2xl font-bold text-gray-800 mb-6">Nova Transação</h2>
 <form action="/your_form_action" method="post">
-  <!-- Nome -->
   <div class="mb-4">
     <label for="name" class="block text-sm font-medium text-gray-700">Nome</label>
     <input 
@@ -39,7 +38,6 @@
     />
   </div>
 
-  <!-- Valor -->
   <div class="mb-4">
     <label for="value" class="block text-sm font-medium text-gray-700">Valor</label>
     <input 
@@ -52,7 +50,6 @@
     />
   </div>
 
-  <!-- Mês -->
   <div class="mb-4">
     <label for="month" class="block text-sm font-medium text-gray-700">Mês</label>
     <input 
@@ -63,7 +60,6 @@
     />
   </div>
 
-  <!-- Subscrição -->
   <div class="mb-4">
     <label for="subscription" class="block text-sm font-medium text-gray-700">É uma assinatura?</label>
     <select 
@@ -76,7 +72,6 @@
     </select>
   </div>
 
-  <!-- Número de Parcelas -->
   <div class="mb-4">
     <label for="number_of_installments" class="block text-sm font-medium text-gray-700">Número de Parcelas</label>
     <input 
@@ -88,7 +83,6 @@
     />
   </div>
 
-  <!-- Parcela Atual -->
   <div class="mb-4">
     <label for="current_installment" class="block text-sm font-medium text-gray-700">Parcela Atual</label>
     <input 
@@ -100,7 +94,6 @@
     />
   </div>
 
-  <!-- Conta Bancária -->
   <div class="mb-4">
     <label for="bank_account" class="block text-sm font-medium text-gray-700">Conta Bancária</label>
     <select 
@@ -108,13 +101,11 @@
       name="bank_account" 
       class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
     >
-      <!-- Substitua os valores abaixo pelos seus dados dinâmicos -->
       <option value="1">Conta Banco 1</option>
       <option value="2">Conta Banco 2</option>
     </select>
   </div>
 
-  <!-- Categoria da Transação -->
   <div class="mb-4">
     <label for="transaction_category" class="block text-sm font-medium text-gray-700">Categoria</label>
     <select 
@@ -122,13 +113,11 @@
       name="transaction_category" 
       class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
     >
-      <!-- Substitua os valores abaixo pelos seus dados dinâmicos -->
       <option value="supermercado">Supermercado</option>
       <option value="outro">Outro</option>
     </select>
   </div>
 
-  <!-- Grupo Familiar -->
   <div class="mb-4">
     <label for="family_group" class="block text-sm font-medium text-gray-700">Grupo Familiar</label>
     <select 
@@ -136,13 +125,11 @@
       name="family_group" 
       class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
     >
-      <!-- Substitua os valores abaixo pelos seus dados dinâmicos -->
       <option value="family_group1">Grupo Familiar 1</option>
       <option value="family_group2">Grupo Familiar 2</option>
     </select>
   </div>
 
-  <!-- Botão de Enviar -->
   <div class="mt-6">
     <button 
       type="submit" 

@@ -1,9 +1,3 @@
-<!--<div id="modal" class="modal fixed inset-0 overflow-hidden backdrop-blur-sm flex items-center justify-end pr-3 py-3 transition-transform duration-30 z-50">
-  <div class="modal-content p-6 backdrop-blur-sm bg-white/90 w-11/12 sm:w-11/12 md:w-7/12 lg:w-5/12 rounded-md shadow-sm h-full overflow-y-auto">
-    <%#= render 'form' %>-->
-<!--  </div>
-</div>-->
-
 <div class="individual-content grid gap-x-3	grid-cols-12">
   <div class="hero-card bg-white rounded col-span-12 px-5 py-4 flex items-center">
     <div class="principal-content flex-1">
@@ -47,10 +41,9 @@
     </div>
   </div>
 
-  <%#= turbo_frame_tag "transactions", class: "col-span-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6 mt-10 text-gray-500" do %>
-    <section class="col-span-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6 mt-6 text-gray-500">
+  <section class="col-span-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6 mt-6 text-gray-500">
     <% @totals_by_category_type.each do |category_type, total| %>
-      <%= link_to new_by_category_type_path(@family_group, new_url(category_type)), data: { turbo_frame: "modal" } do %>
+      <%= link_to new_by_category_type_path(@family_group, new_url(category_type)), data: { turbo_frame: "modal-frame" } do %>
         <div class="relative group overflow-hidden p-8 rounded-xl bg-white border border-gray-200 2border-gray-800 2bg-gray-900 cursor-pointer">
           <div aria-hidden="true" class="inset-0 absolute aspect-video border rounded-full -translate-y-1/2 group-hover:-translate-y-1/4 duration-300 bg-gradient-to-b <%= 'from-green-500' if category_type == "Receitas" %> <%= 'from-blue-500' if category_type == "Investimentos" %> <%= 'from-red-500' if category_type == "Gastos Fixos" %> <%= 'from-yellow-500' if category_type == "Gastos Variáveis" %> to-white 2from-white 2to-white blur-2xl opacity-25 2opacity-5 2group-hover:opacity-10"></div>
           <div class="relative">
@@ -94,8 +87,7 @@
         </div>
       <% end %>
     <% end %>
-    </section>
-  <%# end %>
+  </section>
 
   <section class="col-span-12">
     <div class="flex flex-col mt-0 w-full">
@@ -132,6 +124,15 @@
                               transaction.transaction_category.category_type.name === "Gastos Fixos" ? "bg-red-400" : "",
                               transaction.transaction_category.category_type.name === "Gastos Variáveis" ? "bg-yellow-400" : ""
                             ] do %>
+                              <% if transaction.transaction_category.category_type.name === "Receitas"  %>
+                                🤑
+                              <% elsif transaction.transaction_category.category_type.name === "Investimentos" %>
+                                🏦
+                              <% elsif transaction.transaction_category.category_type.name === "Gastos Fixos" %>
+                                🧾
+                              <% else %>
+                                💳
+                              <% end %>
                               <%= transaction.transaction_category.category_type.name %>
                           <% end %>
                         </td>

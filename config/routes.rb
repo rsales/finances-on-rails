@@ -16,7 +16,6 @@ Rails.application.routes.draw do
   get "/finances/:family_group_id/consolidated", to: "finances/consolidated#index", as: "finances_consolidated"
 
   get "/finances/:family_group_id/transactions", to: "finances/transactions#index", as: "finances_transactions"
-  get "/finances/:family_group_id/transactions/new", to: "finances/transactions#new", as: "new_finances_transaction"
   get "/finances/:family_group_id/transactions/:transaction_id/edit", to: "finances/transactions#edit", as: "edit_finances_transaction"
   get "/finances/:family_group_id/transactions/new/:category_type", to: "finances/transactions#new_by_category_type", as: "new_by_category_type"
   post "/finances/:family_group_id/transactions", to: "finances/budgets#create", as: "create_finances_transaction"

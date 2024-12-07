@@ -1,7 +1,0 @@
-<%= turbo_stream.update "modal-content" do %>
-  <%= render "form", transaction: @transaction, transaction_categories: @transaction_categories %>
-<% end %>
-
-<%= turbo_stream.update "modal" do %>
-  <div class="modal show"></div>
-<% end %>

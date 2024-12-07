@@ -60,11 +60,6 @@ class Finances::TransactionsController < ApplicationController
     end
   end
 
-  def new
-    @transaction = @family_group.transactions.build
-    @transaction_categories = TransactionCategory.all.order(:name)
-  end
-
   def new_by_category_type
     @category_type = CATEGORY_TYPE_MAP[params[:category_type]]
 
@@ -82,8 +77,8 @@ class Finances::TransactionsController < ApplicationController
     @transaction = @family_group.transactions.build
 
     respond_to do |format|
-      format.turbo_stream
-      format.html { render :new }
+      format.turbo_stream { render :new_by_category_type }
+      format.html { render :new_by_category_type, layout: false }
     end
   end
 

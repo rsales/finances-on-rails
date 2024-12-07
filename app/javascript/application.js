@@ -129,3 +129,17 @@ document.addEventListener("turbo:load", () => {
     }, 950);
   }
 });
+
+document.addEventListener("turbo:frame-load", (event) => {
+  const modal = document.getElementById("modal");
+  if (event.target.id === "modal-frame") {
+    modal.classList.remove("hidden"); // Exibe o modal
+  }
+});
+
+document.addEventListener("click", (event) => {
+  if (event.target.matches(".modal") || event.target.closest(".modal-close")) {
+    const modal = document.getElementById("modal");
+    modal.classList.add("hidden"); // Esconde o modal
+  }
+});
