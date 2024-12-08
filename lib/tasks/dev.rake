@@ -142,3 +142,58 @@ namespace :dev do
     puts "Transactions for 2024 created successfully!"
   end
 end
+
+
+############################################################################################################
+# Rails C - Mock Transaction simulating a subscription
+############################################################################################################
+
+# Encontre ou crie os objetos associados necessários
+family_group = FamilyGroup.find_or_create_by(name: "Família Sales")
+bank_account = BankAccount.find_or_create_by(name: "Nubank Rafael") do |account|
+  account.family_group = family_group
+end
+transaction_category = TransactionCategory.find_or_create_by(name: "Casa", family_group: family_group)
+
+# Crie a transação inicial
+transaction = Transaction.create(
+  name: "Compra de Exemplo",
+  value: 100.0,
+  month: "2024-11",
+  subscription: true,
+  number_of_installments: 2,
+  current_installment: 1,
+  bank_account: bank_account,
+  transaction_category: transaction_category,
+  family_group: family_group
+)
+
+# Verifique se a transação foi criada corretamente
+puts transaction.errors.full_messages unless transaction.persisted?
+
+# Verifique se as transações futuras foram criadas
+future_transactions = Transaction.where("month > ?", transaction.month)
+puts future_transactions.map { |t| "#{t.name} - #{t.month} - Parcela #{t.current_installment} de #{t.number_of_installments}" }
+
+
+
+############################################################################################################
+# Rails C - Mock Transaction simulating a subscription destroy
+############################################################################################################
+
+# Encontre a transação inicial
+transaction = Transaction.find_by(name: "Compra de Exemplo", month: "2024-11")
+
+if transaction
+  # Verifique se a transação foi encontrada
+  puts "Transação encontrada: #{transaction.name} - #{transaction.month} - Parcela #{transaction.current_installment} de #{transaction.number_of_installments}"
+
+  # Simule a ação destroy para remover todas as parcelas
+  transaction.destroy
+
+  # Verifique se todas as transações foram removidas
+  remaining_transactions = Transaction.where(name: "Compra de Exemplo", transaction_category: transaction.transaction_category, bank_account: transaction.bank_account)
+  puts "Transações restantes: #{remaining_transactions.map { |t| "#{t.name} - #{t.month} - Parcela #{t.current_installment} de #{t.number_of_installments}" }}"
+else
+  puts "Transação não encontrada."
+end

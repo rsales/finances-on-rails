@@ -1,141 +1,101 @@
-<%#= form_with model: [@family_group, @transaction], url: new_by_category_type_path(@family_group), local: false do |form| %>
-<!--  <div class="form-group">-->
-    <%#= form.label :description %>
-    <%#= form.text_field :description, class: "form-control" %>
-<!--  </div>
+<%= content_tag :h2, 
+  class: [
+    "text-3xl font-black mb-5 text-gray-500",
+  ] do %>  
+    <% if @category_type === "Receitas"  %>
+      <%= @transaction.new_record? ? "🤑 Nova" : "Editar" %>
+      Receita
+    <% elsif @category_type === "Investimentos" %>
+      <%= @transaction.new_record? ? "🏦 Novo" : "Editar" %>
+      Investimento
+    <% elsif @category_type === "Gastos Fixos" %>
+      <%= @transaction.new_record? ? "🧾 Novo" : "Editar" %>
+      Gasto Fixo
+    <% else %>
+      <%= @transaction.new_record? ? "💳 Novo" : "Editar" %>
+      Gasto Variável
+    <% end %>
+<% end %>
 
-  <div class="form-group">
-    <%#= form.label :amount %>-->
-    <%#= form.number_field :amount, class: "form-control" %>
-<!--  </div>
+<%= form_with model: [@family_group, @transaction], url: @transaction.new_record? ? create_finances_transaction_path(@family_group) : update_finances_transaction_path(@family_group, @transaction), local: false do |form| %>
+  <div class="mb-4">
+    <%= form.label :value %>
+    <%= 
+      form.text_field :value,
+      placeholder: "Ex: 800.00",
+      class: "mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+    %>
+  </div>
 
-  <div class="form-group">
-    <%#= form.label :transaction_category_id, "Categoria" %>-->
-    <%#= form.collection_select :transaction_category_id, @transaction_categories, :id, :name, { prompt: "Selecione uma categoria" }, class: "form-control" %>
-<!--  </div>
+  <div class="mb-4">
+    <%= form.label :name %>
+    <%= 
+      form.text_field :name,
+      placeholder: "Ex: Compras no Supermercado",
+      class: "mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+    %>
+  </div>
 
-  <div class="form-group">
-    <%#= form.label :date %>-->
-    <%#= form.date_field :date, class: "form-control" %>
-<!--  </div>
+  <div class="mb-4">
+    <%= form.label :month %>
+    <%= 
+      form.month_field :month,
+      value: @month,
+      placeholder: "Ex: Janerio 2021",
+      class: "mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+    %>
+  </div>
 
-  <div class="form-group">
-    <%#= form.submit "Criar Transação", class: "btn btn-primary" %>-->
+  <div class="mb-4">
+    <%= form.label :subscription %>
+    <%= 
+      form.select :subscription,
+      options_for_select([["Não", false], ["Sim", true]]),
+      { prompt: "Selecione uma opção" },
+      class: "mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+    %>
+  </div>
+
+  <div class="mb-4">
+    <%= form.label :number_of_installments %>
+    <%= 
+      form.number_field :number_of_installments,
+      placeholder: "Ex: 0 para compra única",
+      class: "mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+    %>
+  </div>
+
+  <div class="mb-4">
+    <%= form.label :current_installment %>
+    <%= 
+      form.number_field :current_installment,
+      placeholder: "Ex: 0",
+      class: "mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+    %>
+  </div>
+
+<!--  <div class="mb-4">-->
+    <%#= form.label :bank_account_id %>
+    <%#= 
+      form.collection_select :bank_account_id, @bank_accounts, :id, :name,
+      { prompt: "Selecione uma conta bancária" },
+      class: "mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+    %>
 <!--  </div>-->
-<%# end %>
-
-
-<h2 class="text-2xl font-bold text-gray-800 mb-6">Nova Transação</h2>
-<form action="/your_form_action" method="post">
-  <div class="mb-4">
-    <label for="name" class="block text-sm font-medium text-gray-700">Nome</label>
-    <input 
-      type="text" 
-      id="name" 
-      name="name" 
-      placeholder="Ex: Compras no Supermercado"
-      class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
-    />
-  </div>
 
   <div class="mb-4">
-    <label for="value" class="block text-sm font-medium text-gray-700">Valor</label>
-    <input 
-      type="number" 
-      id="value" 
-      name="value" 
-      placeholder="Ex: 800.00"
-      step="0.01"
-      class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
-    />
+    <%= form.label :transaction_category_id %>
+    <%= 
+      form.collection_select :transaction_category_id, @transaction_categories, :id, :name,
+      { prompt: "Selecione uma categoria" },
+      class: "mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+    %>
   </div>
 
-  <div class="mb-4">
-    <label for="month" class="block text-sm font-medium text-gray-700">Mês</label>
-    <input 
-      type="month" 
-      id="month" 
-      name="month"
-      class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
-    />
-  </div>
+  <%= form.hidden_field :transaction_type, value: @category_type %>
 
-  <div class="mb-4">
-    <label for="subscription" class="block text-sm font-medium text-gray-700">É uma assinatura?</label>
-    <select 
-      id="subscription" 
-      name="subscription" 
-      class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
-    >
-      <option value="false">Não</option>
-      <option value="true">Sim</option>
-    </select>
+  <div class="form-group">
+    <%= form.submit @transaction.new_record? ? "Criar Transação" : "Atualizar Transação", class: "w-full bg-blue-500 text-white py-2 px-4 rounded-md shadow-sm hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2" %>
   </div>
+<% end %>
 
-  <div class="mb-4">
-    <label for="number_of_installments" class="block text-sm font-medium text-gray-700">Número de Parcelas</label>
-    <input 
-      type="number" 
-      id="number_of_installments" 
-      name="number_of_installments" 
-      placeholder="Ex: 0 para compra única"
-      class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
-    />
-  </div>
-
-  <div class="mb-4">
-    <label for="current_installment" class="block text-sm font-medium text-gray-700">Parcela Atual</label>
-    <input 
-      type="number" 
-      id="current_installment" 
-      name="current_installment" 
-      placeholder="Ex: 0"
-      class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
-    />
-  </div>
-
-  <div class="mb-4">
-    <label for="bank_account" class="block text-sm font-medium text-gray-700">Conta Bancária</label>
-    <select 
-      id="bank_account" 
-      name="bank_account" 
-      class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
-    >
-      <option value="1">Conta Banco 1</option>
-      <option value="2">Conta Banco 2</option>
-    </select>
-  </div>
-
-  <div class="mb-4">
-    <label for="transaction_category" class="block text-sm font-medium text-gray-700">Categoria</label>
-    <select 
-      id="transaction_category" 
-      name="transaction_category" 
-      class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
-    >
-      <option value="supermercado">Supermercado</option>
-      <option value="outro">Outro</option>
-    </select>
-  </div>
-
-  <div class="mb-4">
-    <label for="family_group" class="block text-sm font-medium text-gray-700">Grupo Familiar</label>
-    <select 
-      id="family_group" 
-      name="family_group" 
-      class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
-    >
-      <option value="family_group1">Grupo Familiar 1</option>
-      <option value="family_group2">Grupo Familiar 2</option>
-    </select>
-  </div>
-
-  <div class="mt-6">
-    <button 
-      type="submit" 
-      class="w-full bg-blue-500 text-white py-2 px-4 rounded-md shadow-sm hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2"
-    >
-      Salvar Transação
-    </button>
-  </div>
-</form>

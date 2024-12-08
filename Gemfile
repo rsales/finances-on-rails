@@ -37,6 +37,9 @@ gem "bootsnap", require: false
 # Flexible authentication solution for Rails with Warden. [https://github.com/heartcombo/devise]
 gem "devise"
 
+# Translations for the devise gem [https://github.com/devise-i18n/devise-i18n]
+gem "devise-i18n"
+
 # A framework for building reusable, testable & encapsulated view components in Ruby on Rails. [https://github.com/ViewComponent/view_component]
 gem "view_component", "~> 3.0"
 

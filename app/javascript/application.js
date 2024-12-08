@@ -3,6 +3,10 @@ import "@hotwired/turbo-rails"
 import "controllers"
 import "chart.js"
 
+//////////////////////////////
+// Consolidated Chart
+//////////////////////////////
+
 document.addEventListener("turbo:load", () => {
   const spinner = document.getElementById("loading-spinner");
   const chartElement = document.getElementById("consolidatedChart");
@@ -130,6 +134,10 @@ document.addEventListener("turbo:load", () => {
   }
 });
 
+//////////////////////////////
+// Open and Close Modal
+//////////////////////////////
+
 document.addEventListener("turbo:frame-load", (event) => {
   const modal = document.getElementById("modal");
   if (event.target.id === "modal-frame") {
@@ -142,4 +150,102 @@ document.addEventListener("click", (event) => {
     const modal = document.getElementById("modal");
     modal.classList.add("hidden"); // Esconde o modal
   }
+});
+
+//////////////////////////////
+// Open delete confirmation modal
+//////////////////////////////
+
+document.addEventListener("turbo:load", () => {
+  const deleteButtons = document.querySelectorAll(".delete-transaction");
+  const modal = document.getElementById("delete-confirmation-modal");
+  const deleteFutureOnlyButton = document.getElementById("delete-future-only");
+  const deleteAllButton = document.getElementById("delete-all");
+  const cancelDeleteButton = document.getElementById("cancel-delete");
+
+  let transactionId = null;
+  let familyGroupId = null;
+
+  deleteButtons.forEach(button => {
+    button.addEventListener("click", (event) => {
+      event.preventDefault();
+      transactionId = button.dataset.transactionId;
+      familyGroupId = button.dataset.familyGroupId;
+      modal.classList.remove("hidden");
+    });
+  });
+
+  deleteFutureOnlyButton.addEventListener("click", () => {
+    if (transactionId && familyGroupId) {
+      fetch(`/finances/${familyGroupId}/transactions/${transactionId}/destroy_future`, {
+        method: "DELETE",
+        headers: {
+          "X-CSRF-Token": document.querySelector('meta[name="csrf-token"]').content
+        }
+      }).then(() => {
+        window.location.reload();
+      });
+    }
+  });
+
+  deleteAllButton.addEventListener("click", () => {
+    if (transactionId && familyGroupId) {
+      fetch(`/finances/${familyGroupId}/transactions/${transactionId}`, {
+        method: "DELETE",
+        headers: {
+          "X-CSRF-Token": document.querySelector('meta[name="csrf-token"]').content
+        }
+      }).then(() => {
+        window.location.reload();
+      });
+    }
+  });
+
+  cancelDeleteButton.addEventListener("click", () => {
+    modal.classList.add("hidden");
+  });
+});
+
+
+//////////////////////////////
+// Open dropdown Add new transaction
+//////////////////////////////
+
+document.addEventListener("turbo:load", function () {
+  const button = document.querySelector('#button-add-transaction');
+  const dropdown = document.querySelector('#dropdown-transactions');
+  const bgDropdown = document.querySelector('#bg-dropdown');
+
+  button.addEventListener('click', function () {
+    if (dropdown.classList.contains('hidden')) {
+      dropdown.classList.remove('hidden');
+      dropdown.classList.add('transition', 'ease-out', 'duration-100', 'transform', 'opacity-100', 'scale-100');
+      dropdown.classList.remove('opacity-0', 'scale-95');
+      // bgDropdown.classList.remove('hidden');
+      // bgDropdown.classList.add('transition', 'ease-out', 'duration-100', 'transform', 'opacity-60');
+      // bgDropdown.classList.remove('opacity-0');
+    } else {
+      dropdown.classList.add('transition', 'ease-in', 'duration-75', 'transform', 'opacity-0', 'scale-95');
+      dropdown.classList.remove('opacity-100', 'scale-100');
+      // bgDropdown.classList.add('transition', 'ease-out', 'duration-75', 'transform', 'opacity-0');
+      // bgDropdown.classList.remove('opacity-60');
+      setTimeout(() => {
+        dropdown.classList.add('hidden');
+        // bgDropdown.classList.add('hidden');
+      }, 75);
+    }
+  });
+
+  document.addEventListener('click', function (event) {
+    if (!button.contains(event.target) && !dropdown.contains(event.target)) {
+      dropdown.classList.add('transition', 'ease-in', 'duration-75', 'transform', 'opacity-0', 'scale-95');
+      dropdown.classList.remove('opacity-100', 'scale-100');
+      // bgDropdown.classList.add('transition', 'ease-out', 'duration-75', 'transform', 'opacity-0');
+      // bgDropdown.classList.remove('opacity-60');
+      setTimeout(() => {
+        dropdown.classList.add('hidden');
+        // bgDropdown.classList.add('hidden');
+      }, 75);
+    }
+  });
 });

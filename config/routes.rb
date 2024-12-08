@@ -2,10 +2,13 @@ Rails.application.routes.draw do
   root to: redirect("/finances")
   devise_for :users
 
+  # Finances Routes - Home
   get "/finances", to: "finances/home#index", as: "finances_home"
 
+  # Family Groups Routes - Dashboard
   get "/finances/:family_group_id/dashboard", to: "finances/dashboards#show", as: "finances_dashboard"
 
+  # Budgets Routes
   get "/finances/:family_group_id/budgets", to: "finances/budgets#index", as: "finances_budgets"
   get "/finances/:family_group_id/budget/new", to: "finances/budgets#new", as: "new_finances_budget"
   get "/finances/:family_group_id/budget/edit", to: "finances/budgets#edit", as: "edit_finances_budgets"
@@ -13,38 +16,19 @@ Rails.application.routes.draw do
   get "/finances/:family_group_id/budget/:month", to: "finances/budgets#show", as: "finances_budget_show"
   post "/finances/:family_group_id/budget", to: "finances/budgets#create", as: "create_finances_budget"
 
+  # Consolidated Routes
   get "/finances/:family_group_id/consolidated", to: "finances/consolidated#index", as: "finances_consolidated"
 
+  # Transactions Routes
   get "/finances/:family_group_id/transactions", to: "finances/transactions#index", as: "finances_transactions"
-  get "/finances/:family_group_id/transactions/:transaction_id/edit", to: "finances/transactions#edit", as: "edit_finances_transaction"
   get "/finances/:family_group_id/transactions/new/:category_type", to: "finances/transactions#new_by_category_type", as: "new_by_category_type"
-  post "/finances/:family_group_id/transactions", to: "finances/budgets#create", as: "create_finances_transaction"
-
-  # namespace :finances do
-  #   resources :family_groups, only: [] do
-  #     resources :transactions, only: [ :index, :new, :create, :edit, :update, :destroy ] do
-  #       collection do
-  #         get "new/:category_type", to: "transactions#new_by_category_type", as: "new_by_category_type"
-  #       end
-  #     end
-  #   end
-  # end
-
-  # resources :users, only: [] do
-  #   scope "/config" do
-  #     get "profile", to: "users/configurations#edit_profile", as: :config_profile
-  #     resources :bank_accounts, only: [ :index, :new, :create ], path: "bank-accounts", controller: "users/bank_accounts"
-  #   end
-  # end
-
-  # scope "/finances/:family_group_id/config", as: "finances_config" do
-  #   get "family-group", to: "finances/configurations#family_group", as: "family_group"
-  #   get "categories", to: "finances/configurations#categories", as: "categories"
-  #   get "types", to: "finances/configurations#types", as: "types"
-  # end
+  post "/finances/:family_group_id/transactions", to: "finances/transactions#create", as: "create_finances_transaction"
+  get "/finances/:family_group_id/transactions/:id/edit", to: "finances/transactions#edit", as: "edit_finances_transaction"
+  patch "/finances/:family_group_id/transactions/:id", to: "finances/transactions#update", as: "update_finances_transaction"
+  delete "/finances/:family_group_id/transactions/:id", to: "finances/transactions#destroy", as: "destroy_finances_transaction"
+  delete "/finances/:family_group_id/transactions/:id/destroy_future", to: "finances/transactions#destroy_future", as: "destroy_future_finances_transaction"
 
   get "up" => "rails/health#show", as: :rails_health_check
-
   get "service-worker" => "rails/pwa#service_worker", as: :pwa_service_worker
   get "manifest" => "rails/pwa#manifest", as: :pwa_manifest
 end

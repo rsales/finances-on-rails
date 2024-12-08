@@ -1,0 +1,48 @@
+<section class="col-span-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6 mt-6 text-gray-500">
+  <% @totals_by_category_type.each do |category_type, total| %>
+    <%= link_to new_by_category_type_path(@family_group, new_url(category_type)), data: { turbo_frame: "modal-frame" } do %>
+      <div class="relative group overflow-hidden p-8 rounded-xl bg-white border border-gray-200 2border-gray-800 2bg-gray-900 cursor-pointer">
+        <div aria-hidden="true" class="inset-0 absolute aspect-video border rounded-full -translate-y-1/2 group-hover:-translate-y-1/4 duration-300 bg-gradient-to-b <%= 'from-green-500' if category_type == "Receitas" %> <%= 'from-blue-500' if category_type == "Investimentos" %> <%= 'from-red-500' if category_type == "Gastos Fixos" %> <%= 'from-yellow-500' if category_type == "Gastos Variáveis" %> to-white 2from-white 2to-white blur-2xl opacity-25 2opacity-5 2group-hover:opacity-10"></div>
+        <div class="relative">
+          <div class="flex gap-x-2 items-center">
+            <div class="border border-green-500/10 flex relative *:relative *:m-auto size-12 rounded-lg 2bg-gray-900 2border-white/15 before:rounded-[7px] before:absolute before:inset-0 before:border-t before:border-white <%= 'before:from-green-100' if category_type == "Receitas" %> <%= 'before:from-blue-100' if category_type == "Investimentos" %> <%= 'before:from-red-100' if category_type == "Gastos Fixos" %> <%= 'before:from-yellow-100' if category_type == "Gastos Variáveis" %> 2before:border-white/20 before:bg-gradient-to-b 2before:from-white/10 2before:to-transparent before:shadow 2before:shadow-gray-950">
+              <p class="opacity-100">
+                <% if category_type === "Receitas"  %>
+                  🤑
+                <% elsif category_type === "Investimentos" %>
+                  🏦
+                <% elsif category_type === "Gastos Fixos" %>
+                  🧾
+                <% else %>
+                  💳
+                <% end %>
+              </p>
+            </div>
+            <h2 class="text-xl font-bold">
+              <%= category_type %>
+            </h2>
+          </div>
+
+          <div class="mt-2 pb-3 rounded-b-[--card-border-radius] flex flex-col gap-3">
+            <p class="text-4xl font-black <%= 'text-green-400' if category_type == "Receitas" %> <%= 'text-red-400' if category_type != "Receitas" %>">
+              <%= category_type != "Receitas" ? "-" : "" %>
+              <%= number_to_currency(total, locale: 'pt-BR') %>
+            </p>
+
+            <p class="text-gray-700 2text-gray-300 text-xs">
+              <% if category_type === "Receitas"  %>
+                Receita é o total de ganhos financeiros obtidos em um período específico.
+              <% elsif category_type === "Investimentos" %>
+                Investimento é a aplicação de recursos visando gerar retorno financeiro futuro.
+              <% elsif category_type === "Gastos Fixos" %>
+                Gasto fixo é uma despesa recorrente com valor estável, como aluguel ou plano.
+              <% else %>
+                Gasto variável é uma despesa que muda mensalmente, como lazer ou alimentação.
+              <% end %>
+            </p>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  <% end %>
+</section>

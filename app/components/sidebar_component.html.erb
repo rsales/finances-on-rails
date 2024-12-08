@@ -31,7 +31,7 @@
             <%= link_to finances_transactions_path(@family_group, month: Date.today.strftime("%Y-%m")), class: ["tooltip", helpers.current_class?(finances_transactions_path(@family_group))] do %>
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-left-right"><path d="M8 3 4 7l4 4"/><path d="M4 7h16"/><path d="m16 21 4-4-4-4"/><path d="M20 17H4"/></svg>
               <span class="tooltiptext">Transações</span>
-            <% end %>
+            <% end %> 
           </li>
           <li>
             <%#= link_to finances_config_general_path(@family_group), class: helpers.current_class?(finances_config_general_path(@family_group)) do %>
@@ -70,8 +70,4 @@
     </div>
   </aside>
 <% else %>
-  <!--<ul>
-    <li><%= link_to "Login", new_user_session_path %></li>
-    <li><%= link_to "Registrar", new_user_registration_path %></li>
-  </ul>-->
 <% end %>

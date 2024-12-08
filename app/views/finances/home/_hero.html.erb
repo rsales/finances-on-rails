@@ -1,0 +1,10 @@
+<div class="hero-card bg-white rounded col-span-12 px-5 py-4">
+  <p class="text-base text-gray-400 mb-2">Bem-vindo às suas finanças:</p>
+  <h1 class="font-black text-4xl text-gray-700 mb-3">
+    <%= @current_user.name %> 👋
+  </h1>
+  <p class="text-base font-light text-gray-700">
+    Hoje é dia <strong class="font-black"><%= l(Date.current, format: :long) %></strong>
+  </p>
+</div>
+

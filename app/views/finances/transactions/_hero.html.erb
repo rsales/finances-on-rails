@@ -1,0 +1,41 @@
+<div class="hero-card bg-white rounded col-span-12 px-5 py-4 flex items-center">
+  <div class="principal-content flex-1">
+    <div class="flex text-base text-gray-400 mb-2 gap-1">
+      <svg class="w-5 h-6" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-left-right"><path d="M8 3 4 7l4 4"/><path d="M4 7h16"/><path d="m16 21 4-4-4-4"/><path d="M20 17H4"/></svg>
+      <p>
+        Transações:
+      </p>
+    </div>
+    <h1 class="font-black text-3xl text-gray-700">
+      <%= @family_group.name %>
+    </h1>
+  </div>
+
+  <div class="filter">
+    <%= form_with(url: finances_transactions_path(@family_group), method: :get, local: true, data: { turbo_frame: "transactions" }) do |form| %>
+      <div class="form-row flex gap-2">
+        <div class="col-md-3">
+          <%= 
+            month_field_tag :month, 
+            params[:month], 
+            class: "form-control", 
+            placeholder: "Selecione o mês", 
+            min: "2020-01", 
+            max: "2029-12", 
+            onchange: "this.form.submit()"
+          %>
+        </div>
+        <div class="col-md-3">
+          <%= 
+            select_tag :category_type, 
+            options_for_select(@category_types.pluck(:name), 
+            params[:category_type]), 
+            include_blank: "Todas as Categorias", 
+            class: "form-control",
+            onchange: "this.form.submit()"
+          %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>

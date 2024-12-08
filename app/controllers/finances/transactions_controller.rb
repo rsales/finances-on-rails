@@ -75,6 +75,7 @@ class Finances::TransactionsController < ApplicationController
       .where(family_group_id: @family_group.id)
 
     @transaction = @family_group.transactions.build
+    @month = params[:month] || Date.today.strftime("%Y-%m")
 
     respond_to do |format|
       format.turbo_stream { render :new_by_category_type }
@@ -103,6 +104,11 @@ class Finances::TransactionsController < ApplicationController
     @transaction_categories = TransactionCategory.joins(:category_type)
       .where(category_types: { id: @transaction.transaction_category.category_type_id })
       .order(:name)
+
+    respond_to do |format|
+      format.turbo_stream { render :edit }
+      format.html { render :edit, layout: false }
+    end
   end
 
   def update
@@ -114,8 +120,32 @@ class Finances::TransactionsController < ApplicationController
   end
 
   def destroy
+    @transaction = @family_group.transactions.find(params[:id])
+
+    if @transaction.subscription
+      future_transactions = @family_group.transactions.where("month > ? AND name = ? AND transaction_category_id = ? AND bank_account_id = ?", @transaction.month, @transaction.name, @transaction.transaction_category_id, @transaction.bank_account_id)
+      future_transactions.destroy_all
+    end
+
     @transaction.destroy
-    redirect_to finances_transactions_path(@family_group), notice: "Transação excluída com sucesso."
+    respond_to do |format|
+      format.turbo_stream { redirect_to finances_transactions_path(@family_group), notice: "Transação excluída com sucesso." }
+      format.html { redirect_to finances_transactions_path(@family_group), notice: "Transação excluída com sucesso." }
+    end
+  end
+
+  def destroy_future
+    @transaction = @family_group.transactions.find(params[:id])
+
+    if @transaction.subscription
+      future_transactions = @family_group.transactions.where("month > ? AND name = ? AND transaction_category_id = ? AND bank_account_id = ?", @transaction.month, @transaction.name, @transaction.transaction_category_id, @transaction.bank_account_id)
+      future_transactions.destroy_all
+    end
+
+    respond_to do |format|
+      format.turbo_stream { redirect_to finances_transactions_path(@family_group), notice: "Faturas futuras excluídas com sucesso." }
+      format.html { redirect_to finances_transactions_path(@family_group), notice: "Faturas futuras excluídas com sucesso." }
+    end
   end
 
   private
@@ -132,6 +162,16 @@ class Finances::TransactionsController < ApplicationController
   end
 
   def transaction_params
-    params.require(:transaction).permit(:description, :amount, :transaction_category_id, :date)
+    params.require(:transaction).permit(
+      :name,
+      :value,
+      :month,
+      :subscription,
+      :number_of_installments,
+      :current_installment,
+      :transaction_category_id,
+      :bank_account_id,
+      :family_group_id
+    )
   end
 end
