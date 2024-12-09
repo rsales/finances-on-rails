@@ -1,0 +1,32 @@
+<%= form_with model: family_group, url: family_groups_path, local: false, data: { controller: "nested-form" } do |form| %>
+  <div class="mb-4">
+    <%= form.label :name, "Nome do Grupo" %>
+    <%= form.text_field :name, class: "mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500" %>
+  </div>
+  <div class="form-group">
+    <%= form.submit "Criar Grupo", class: "w-full bg-blue-500 text-white py-2 px-4 rounded-md shadow-sm hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2" %>
+  </div>
+
+  <h3 class="text-lg font-medium leading-6 text-gray-900">Usuários Participantes</h3>
+  <table class="min-w-full divide-y divide-gray-200 mb-5">
+    <thead class="bg-gray-50">
+      <tr>
+        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nome</th>
+        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
+        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Função</th>
+        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Ações</th>
+      </tr>
+    </thead>
+    <tbody data-nested-form-target="container">
+      <%= form.fields_for :group_members do |member_form| %>
+        <%= render 'group_member_fields', form: member_form %>
+      <% end %>
+    </tbody>
+  </table>
+  <%= link_to "Adicionar Usuário", "#", class: "text-blue-500", data: { action: "click->nested-form#add" } %>
+  <template data-nested-form-target="template">
+    <%= form.fields_for :group_members, GroupMember.new, child_index: "NEW_RECORD" do |member_form| %>
+      <%= render 'group_member_fields', form: member_form %>
+    <% end %>
+  </template>
+<% end %>

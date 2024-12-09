@@ -1,0 +1,19 @@
+<tr class="nested-fields" data-new-record="true">
+  <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+    <%= form.fields_for :user do |user_form| %>
+      <%= user_form.text_field :name, placeholder: "Nome do usuário", class: "mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500" %>
+    <% end %>
+  </td>
+  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+    <%= form.fields_for :user do |user_form| %>
+      <%= user_form.email_field :email, placeholder: "Email do usuário", class: "mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500" %>
+    <% end %>
+  </td>
+  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+    <%= form.text_field :role, class: "mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500" %>
+  </td>
+  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+    <%= link_to "Remover", "#", class: "remove-fields text-red-500", data: { action: "click->nested-form#remove" } %>
+    <%= form.hidden_field :_destroy %>
+  </td>
+</tr>
