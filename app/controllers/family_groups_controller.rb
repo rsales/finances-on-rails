@@ -21,6 +21,7 @@ class FamilyGroupsController < ApplicationController
         format.turbo_stream do
           render turbo_stream: [
             turbo_stream.before("add-family-group-button", FamilyGroupCardComponent.new(family_group: @family_group)),
+            turbo_stream.remove("modal-frame"),
             turbo_stream.remove("modal")
           ]
         end
@@ -37,6 +38,6 @@ class FamilyGroupsController < ApplicationController
   private
 
   def family_group_params
-    params.require(:family_group).permit(:name, group_members_attributes: [ :id, :user_id, :role, :_destroy, user_attributes: [ :name, :email ] ])
+    params.require(:family_group).permit(:name, group_members_attributes: [ :id, :user_id, :role, :_destroy, user_attributes: [ :id, :name, :email ] ])
   end
 end

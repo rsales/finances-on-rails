@@ -1,5 +1,6 @@
 <tr class="nested-fields" data-new-record="true">
   <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+    <%= form.hidden_field :user_id %>
     <%= form.fields_for :user do |user_form| %>
       <%= user_form.text_field :name, placeholder: "Nome do usuário", class: "mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500" %>
     <% end %>
