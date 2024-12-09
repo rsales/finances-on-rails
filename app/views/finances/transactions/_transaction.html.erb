@@ -1,0 +1,59 @@
+<tr id="transaction-<%= transaction.id %>">
+  <td class="px-4 py-2 text-sm font-bold whitespace-nowrap">
+    <p class="text-sm text-gray-600 font-bold">
+      <%= transaction.name %>
+    </p>
+  </td>
+  <td class="px-4 py-2 text-sm font-bold whitespace-nowrap">
+    <%= content_tag :p, 
+      class: [
+        "text-sm font-normal cursor-pointer text-white rounded inline-block px-2 py-1", 
+        transaction.transaction_category.category_type.name == "Receitas" ? "bg-green-400" : "",
+        transaction.transaction_category.category_type.name == "Investimentos" ? "bg-blue-400" : "",
+        transaction.transaction_category.category_type.name == "Gastos Fixos" ? "bg-red-400" : "",
+        transaction.transaction_category.category_type.name == "Gastos Variáveis" ? "bg-yellow-400" : ""
+      ] do %>
+        <% if transaction.transaction_category.category_type.name == "Receitas"  %>
+          🤑
+        <% elsif transaction.transaction_category.category_type.name == "Investimentos" %>
+          🏦
+        <% elsif transaction.transaction_category.category_type.name == "Gastos Fixos" %>
+          🧾
+        <% else %>
+          💳
+        <% end %>
+        <%= transaction.transaction_category.category_type.name %>
+    <% end %>
+  </td>
+  <td class="px-4 py-2 text-sm font-bold whitespace-nowrap">
+    <p class="text-sm font-normal text-gray-600 cursor-pointer">
+      <%= transaction.transaction_category.name %>
+    </p>
+  </td>
+  <td class="px-4 py-2 text-sm font-bold whitespace-nowrap">
+    <p class="text-sm font-normal text-gray-600 cursor-pointer">
+      <%= transaction.subscription ? "Sim" : "Não" %>
+    </p>
+  </td>
+  <td class="px-4 py-2 text-sm font-bold whitespace-nowrap">
+    <p class="text-sm font-normal text-gray-600 cursor-pointer">
+      <% if transaction.number_of_installments > 0 %>
+        <%= transaction.current_installment %> de <%= transaction.number_of_installments %>
+      <% else %>
+        -  
+      <% end %>
+    </p>
+  </td>
+  <td class="px-4 py-2 text-sm font-bold whitespace-nowrap">
+    <%= content_tag :p, 
+      class: [
+        "text-sm font-bold cursor-pointer",
+        transaction.value < 0 ? "text-red-500" : "text-green-500"
+      ] do %>
+      <%= number_to_currency(transaction.value) %>
+    <% end %>
+  </td>
+  <td class="px-4 py-2 text-sm font-bold whitespace-nowrap">
+    <!-- Ações (editar, excluir, etc.) -->
+  </td>
+</tr>

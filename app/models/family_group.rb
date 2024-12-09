@@ -4,6 +4,7 @@ class FamilyGroup < ApplicationRecord
   has_many :transaction_categories
   has_many :transactions
   has_many :budgets, dependent: :destroy
+  has_many :bank_accounts
 
   accepts_nested_attributes_for :group_members, allow_destroy: true
 

@@ -2,6 +2,7 @@ class Finances::TransactionsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_and_authorize_family_group
   before_action :set_transaction, only: [ :show, :edit, :update, :destroy ]
+  before_action :set_bank_accounts, only: [ :new_by_category_type, :edit ]
   helper_method :new_url
 
   CATEGORY_TYPE_MAP = {
@@ -88,13 +89,20 @@ class Finances::TransactionsController < ApplicationController
 
     if @transaction.save
       respond_to do |format|
-        format.turbo_stream { redirect_to finances_transactions_path(@family_group), notice: "Transação criada com sucesso." }
+        format.turbo_stream do
+          render turbo_stream: [
+            turbo_stream.append("transactions-body", partial: "transaction", locals: { transaction: @transaction }),
+            turbo_stream.remove("modal-frame"),
+            turbo_stream.remove("modal")
+          ]
+        end
         format.html { redirect_to finances_transactions_path(@family_group), notice: "Transação criada com sucesso." }
       end
     else
+      Rails.logger.error @transaction.errors.full_messages.join(", ")
       respond_to do |format|
-        format.turbo_stream { render :new }
-        format.html { render :new }
+        format.turbo_stream { render :new_by_category_type }
+        format.html { render :new_by_category_type }
       end
     end
   end
@@ -107,7 +115,7 @@ class Finances::TransactionsController < ApplicationController
 
     respond_to do |format|
       format.turbo_stream { render :edit }
-      format.html { render :edit, layout: false }
+      format.html { render :edit }
     end
   end
 
@@ -155,6 +163,10 @@ class Finances::TransactionsController < ApplicationController
     unless @family_group
       redirect_to finances_home_path, alert: "Você não tem permissão para acessar este grupo familiar ou ele não existe."
     end
+  end
+
+  def set_bank_accounts
+    @bank_accounts = @family_group.users.joins(:bank_accounts).select("bank_accounts.*")
   end
 
   def set_transaction
