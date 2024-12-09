@@ -5,6 +5,8 @@ class FamilyGroup < ApplicationRecord
   has_many :transactions
   has_many :budgets, dependent: :destroy
 
+  accepts_nested_attributes_for :users, allow_destroy: true
+
   after_create :create_default_transaction_category
 
   def create_default_transaction_category

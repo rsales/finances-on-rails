@@ -79,17 +79,11 @@ Tooltip
   }
 }
 
-
-
-
-
-
-
 /* ==========================================================================
 Family Group Card
 ========================================================================== */
 .family-groups {
-  @apply col-span-12 grid gap-x-3	grid-cols-12 mt-5;
+  @apply col-span-12 grid gap-3	grid-cols-12 mt-5;
 
   .family-group-card {
     @apply text-gray-500 col-span-3 bg-white shadow-sm border rounded-lg p-5 hover:scale-105 hover:bg-gray-50 ease-in-out duration-300;

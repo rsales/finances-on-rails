@@ -1,12 +1,12 @@
-<%= link_to finances_dashboard_path(family_group_id: family_group.id), class: "family-group-card" do %>  
+<%= link_to finances_dashboard_path(family_group_id: @family_group.id), class: "family-group-card" do %>  
   <h3 class="card-title">
-    <%= family_group.name %>
+    <%= @family_group.name %>
   </h3>
 
   <div class="bottom-info">
     <div class="participant-info">
       <p>
-        <%= family_group.users.count %>
+        <%= @family_group.users.count %>
       </p>
       <p>Participantes</p>
     </div>

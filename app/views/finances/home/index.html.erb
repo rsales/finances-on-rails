@@ -1,14 +1,24 @@
-<div class="individual-content grid gap-x-3	grid-cols-12">
+<div class="individual-content grid gap-x-3 grid-cols-12">
   <%= render 'hero' %>
 
   <% if @family_groups.any? %>
-    <div class="family-groups">
+    <div id="family_groups" class="family-groups col-span-12">
       <% @family_groups.each do |family_group| %>
         <%= render FamilyGroupCardComponent.new(family_group: family_group) %>
       <% end %>
+
+      <%= link_to new_family_group_path, data: { turbo_frame: "modal-frame" }, class: "family-group-card text-center cursor-pointer", id: "add-family-group-button" do %>
+        <h3 class="text-5xl">
+          +
+        </h3>
+        <p>Criar um novo grupo Financeiro</p>
+      <% end %>
     </div>
   <% else %>
-    <p>Você ainda não faz parte de nenhum Family Group.</p>
-    <%= link_to "Criar novo Family Group", new_family_group_path, class: "btn btn-primary" %>
+    <div id="empty-state" class="col-span-12 mt-5 text-center flex flex-col items-center justify-center">
+      <%= image_tag("Animation - 1733696574483.gif", class: "w-48") %>
+      <p>Você ainda não faz parte de nenhum Family Group.</p>
+      <%= link_to "Criar novo Family Group", new_family_group_path, data: { turbo_frame: "modal-frame" }, class: "bg-black text-white py-2 px-4 rounded mt-5" %>
+    </div>
   <% end %>
 </div>

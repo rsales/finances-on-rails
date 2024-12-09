@@ -86,12 +86,35 @@
         </div>
       <% end %>
 
-      <div id="modal" class="modal fixed inset-0 overflow-hidden backdrop-blur-sm flex items-center justify-end pr-3 py-3 transition-transform duration-30 z-50 hidden">
-        <%= turbo_frame_tag "modal-frame", class: "modal-content p-6 backdrop-blur-sm bg-white w-11/12 sm:w-11/12 md:w-7/12 lg:w-5/12 rounded-md shadow-sm h-full overflow-y-auto overflow-hidden border border-gray-200 2border-gray-800 2bg-gray-900" do %>
-        <% end %>
-      </div>
-
       <%= yield %>
     </main>
+
+    <div id="modal" class="modal fixed inset-0 overflow-hidden backdrop-blur-sm flex items-center justify-end pr-3 py-3 transition-transform duration-300 transform translate-x-full z-50 hidden">
+      <%= turbo_frame_tag "modal-frame", class: "modal-content p-6 bg-white w-11/12 sm:w-11/12 md:w-7/12 lg:w-5/12 rounded-xl shadow-lg h-full overflow-y-auto overflow-hidden border border-gray-100" do %>
+      <% end %>
+    </div>
+
+    <% unless current_page?(finances_home_path) %>
+      <div class="fixed right-3 bottom-3 inline-block text-left">
+        <div class="relative">
+          <div id="dropdown-transactions" class="absolute right-0 z-10 -mt-40 w-44 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black/5 focus:outline-none hidden" role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabindex="-1">
+            <div class="py-1 text-right" role="none">
+              <%= link_to "Nova Receita", new_by_category_type_path(@family_group, new_url("Receitas")), data: { turbo_frame: "modal-frame" }, class: "block px-4 py-2 text-sm text-gray-700 font-medium hover:text-green-600 hover:bg-gray-100", role: "menuitem", tabindex: "-1", id: "menu-item-0" %>
+              <%= link_to "Novo Investimento", new_by_category_type_path(@family_group, new_url("Investimentos")), data: { turbo_frame: "modal-frame" }, class: "block px-4 py-2 text-sm text-gray-700 font-medium hover:text-blue-600 hover:bg-gray-100", role: "menuitem", tabindex: "-1", id: "menu-item-1" %>
+              <%= link_to "Novo Gasto Fixo", new_by_category_type_path(@family_group, new_url("Gastos Fixos")), data: { turbo_frame: "modal-frame" }, class: "block px-4 py-2 text-sm text-gray-700 font-medium hover:text-red-600 hover:bg-gray-100", role: "menuitem", tabindex: "-1", id: "menu-item-2" %>
+              <%= link_to "Novo Gasto Variável", new_by_category_type_path(@family_group, new_url("Gastos Variáveis")), data: { turbo_frame: "modal-frame" }, class: "block px-4 py-2 text-sm text-gray-700 font-medium hover:text-yellow-600 hover:bg-gray-100", role: "menuitem", tabindex: "-1", id: "menu-item-3" %>
+            </div>
+          </div>
+
+          <button id="button-add-transaction" class="fab-button p-0 w-16 h-16 bg-blue-600 rounded-full hover:bg-blue-700 mouse shadow-xl transition ease-in duration-200 focus:outline-none">
+            <svg viewBox="0 0 20 20" enable-background="new 0 0 20 20" class="w-6 h-6 inline-block">
+              <path fill="#FFFFFF" d="M16,10c0,0.553-0.048,1-0.601,1H11v4.399C11,15.951,10.553,16,10,16c-0.553,0-1-0.049-1-0.601V11H4.601 C4.049,11,4,10.553,4,10c0-0.553,0.049-1,0.601-1H9V4.601C9,4.048,9.447,4,10,4c0.553,0,1,0.048,1,0.601V9h4.399 C15.952,9,16,9.447,16,10z" />
+            </svg>
+          </button>
+
+          <div id="bg-dropdown" class="w-screen h-screen bg-black fixed top-0 right-0 opacity-0 z-0 hidden"></div>
+        </div>
+      </div>
+    <% end %>
   </body>
 </html>

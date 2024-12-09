@@ -6,6 +6,7 @@ namespace :dev do
     user2 = User.create(name: "Stephany Batista Ribeiro Sales", email: "stephany.batista96@hotmail.com", password: "123456", password_confirmation: "123456")
     user3 = User.create(name: "Roberto Monteiro de Castro Filho", email: "roberto.mcf@hotmail.com", password: "123456", password_confirmation: "123456")
     user4 = User.create(name: "Beatriz D Bertolon ", email: "beatriz.dbf@hotmail.com", password: "123456", password_confirmation: "123456")
+    user5 = User.create(name: "Rafael Sales", email: "rafael.sales1993@gmail.com", password: "123456", password_confirmation: "123456")
     puts "User created successfully..."
 
     puts "Create FamilyGroup..."
@@ -15,11 +16,11 @@ namespace :dev do
     puts "FamilyGroup created successfully..."
 
     puts "Create GroupMember..."
-    GroupMember.create(user: user1, family_group: family_group1, role: "admin")
-    GroupMember.create(user: user2, family_group: family_group1, role: "admin")
-    GroupMember.create(user: user3, family_group: family_group2, role: "admin")
-    GroupMember.create(user: user4, family_group: family_group2, role: "admin")
-    GroupMember.create(user: user1, family_group: family_group3, role: "admin")
+    GroupMember.create(user: user1, family_group: family_group1, role: "Owner")
+    GroupMember.create(user: user2, family_group: family_group1, role: "Admin")
+    GroupMember.create(user: user3, family_group: family_group2, role: "Owner")
+    GroupMember.create(user: user4, family_group: family_group2, role: "Admin")
+    GroupMember.create(user: user1, family_group: family_group3, role: "Owner")
     puts "GroupMember created successfully..."
 
     puts "Create BankAccount..."
@@ -148,32 +149,32 @@ end
 # Rails C - Mock Transaction simulating a subscription
 ############################################################################################################
 
-# Encontre ou crie os objetos associados necessários
-family_group = FamilyGroup.find_or_create_by(name: "Família Sales")
-bank_account = BankAccount.find_or_create_by(name: "Nubank Rafael") do |account|
-  account.family_group = family_group
-end
-transaction_category = TransactionCategory.find_or_create_by(name: "Casa", family_group: family_group)
+# # Encontre ou crie os objetos associados necessários
+# family_group = FamilyGroup.find_or_create_by(name: "Família Sales")
+# bank_account = BankAccount.find_or_create_by(name: "Nubank Rafael") do |account|
+#   account.family_group = family_group
+# end
+# transaction_category = TransactionCategory.find_or_create_by(name: "Casa", family_group: family_group)
 
-# Crie a transação inicial
-transaction = Transaction.create(
-  name: "Compra de Exemplo",
-  value: 100.0,
-  month: "2024-11",
-  subscription: true,
-  number_of_installments: 2,
-  current_installment: 1,
-  bank_account: bank_account,
-  transaction_category: transaction_category,
-  family_group: family_group
-)
+# # Crie a transação inicial
+# transaction = Transaction.create(
+#   name: "Compra de Exemplo",
+#   value: 100.0,
+#   month: "2024-11",
+#   subscription: true,
+#   number_of_installments: 2,
+#   current_installment: 1,
+#   bank_account: bank_account,
+#   transaction_category: transaction_category,
+#   family_group: family_group
+# )
 
-# Verifique se a transação foi criada corretamente
-puts transaction.errors.full_messages unless transaction.persisted?
+# # Verifique se a transação foi criada corretamente
+# puts transaction.errors.full_messages unless transaction.persisted?
 
-# Verifique se as transações futuras foram criadas
-future_transactions = Transaction.where("month > ?", transaction.month)
-puts future_transactions.map { |t| "#{t.name} - #{t.month} - Parcela #{t.current_installment} de #{t.number_of_installments}" }
+# # Verifique se as transações futuras foram criadas
+# future_transactions = Transaction.where("month > ?", transaction.month)
+# puts future_transactions.map { |t| "#{t.name} - #{t.month} - Parcela #{t.current_installment} de #{t.number_of_installments}" }
 
 
 
@@ -181,19 +182,19 @@ puts future_transactions.map { |t| "#{t.name} - #{t.month} - Parcela #{t.current
 # Rails C - Mock Transaction simulating a subscription destroy
 ############################################################################################################
 
-# Encontre a transação inicial
-transaction = Transaction.find_by(name: "Compra de Exemplo", month: "2024-11")
+# # Encontre a transação inicial
+# transaction = Transaction.find_by(name: "Compra de Exemplo", month: "2024-11")
 
-if transaction
-  # Verifique se a transação foi encontrada
-  puts "Transação encontrada: #{transaction.name} - #{transaction.month} - Parcela #{transaction.current_installment} de #{transaction.number_of_installments}"
+# if transaction
+#   # Verifique se a transação foi encontrada
+#   puts "Transação encontrada: #{transaction.name} - #{transaction.month} - Parcela #{transaction.current_installment} de #{transaction.number_of_installments}"
 
-  # Simule a ação destroy para remover todas as parcelas
-  transaction.destroy
+#   # Simule a ação destroy para remover todas as parcelas
+#   transaction.destroy
 
-  # Verifique se todas as transações foram removidas
-  remaining_transactions = Transaction.where(name: "Compra de Exemplo", transaction_category: transaction.transaction_category, bank_account: transaction.bank_account)
-  puts "Transações restantes: #{remaining_transactions.map { |t| "#{t.name} - #{t.month} - Parcela #{t.current_installment} de #{t.number_of_installments}" }}"
-else
-  puts "Transação não encontrada."
-end
+#   # Verifique se todas as transações foram removidas
+#   remaining_transactions = Transaction.where(name: "Compra de Exemplo", transaction_category: transaction.transaction_category, bank_account: transaction.bank_account)
+#   puts "Transações restantes: #{remaining_transactions.map { |t| "#{t.name} - #{t.month} - Parcela #{t.current_installment} de #{t.number_of_installments}" }}"
+# else
+#   puts "Transação não encontrada."
+# end

@@ -50,7 +50,7 @@ ActiveRecord::Schema[7.2].define(version: 2024_10_30_015414) do
   create_table "group_members", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.bigint "family_group_id", null: false
-    t.string "role"
+    t.string "role", default: "Editor", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["family_group_id"], name: "index_group_members_on_family_group_id"
