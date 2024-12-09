@@ -31,4 +31,9 @@ Rails.application.routes.draw do
   patch "/finances/:family_group_id/transactions/:id", to: "finances/transactions#update", as: "update_finances_transaction"
   delete "/finances/:family_group_id/transactions/:id", to: "finances/transactions#destroy", as: "destroy_finances_transaction"
   delete "/finances/:family_group_id/transactions/:id/destroy_future", to: "finances/transactions#destroy_future", as: "destroy_future_finances_transaction"
+
+  get "up" => "rails/health#show", as: :rails_health_check
+
+  get "service-worker" => "rails/pwa#service_worker", as: :pwa_service_worker
+  get "manifest" => "rails/pwa#manifest", as: :pwa_manifest
 end

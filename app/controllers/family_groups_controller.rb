@@ -22,10 +22,10 @@ class FamilyGroupsController < ApplicationController
         format.turbo_stream do
           render turbo_stream: [
             turbo_stream.before("add-family-group-button", FamilyGroupCardComponent.new(family_group: @family_group)),
-            turbo_stream.remove("modal")
+            turbo_stream.replace("modal-frame", partial: "family_groups/add_users", locals: { family_group: @family_group })
           ]
         end
-        format.html { redirect_to family_groups_path, notice: "Grupo Financeiro criado com sucesso." }
+        format.html { redirect_to new_family_group_path(@family_group), notice: "Grupo Financeiro criado com sucesso. Agora você pode adicionar usuários." }
       end
     else
       respond_to do |format|
@@ -57,6 +57,6 @@ class FamilyGroupsController < ApplicationController
   private
 
   def family_group_params
-    params.require(:family_group).permit(:name, user_ids: [])
+    params.require(:family_group).permit(:name, group_members_attributes: [ :id, :user_id, :role, :_destroy ])
   end
 end
